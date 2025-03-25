@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Wallet Sign Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(180deg, #111726 0%, #0A0E17 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 420px;
+            background-color: #1A2235;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow: auto;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #ffffff;
+            font-size: 28px;
+            margin-top: 10px;
+        }
+
+        .wallet-icon {
+            font-size: 48px;
+            color: #4F8EFF;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #dcdcdc;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #2A3446;
+            background-color: #141C2E;
+            color: #ffffff;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #4F8EFF;
+            outline: none;
+        }
+        
+        .signup-btn {
+            background: linear-gradient(180deg, #111726 0%, #0A0E17 100%);
+            border: 1px solid #2A3446;
+            color: white;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .signup-btn:hover {
+            background: linear-gradient(180deg, #172234 0%, #101828 100%);
+            border-color: #4F8EFF;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #a0a0a0;
+        }
+        
+        .login-link a {
+            color: #4F8EFF;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .alert {
+            padding: 10px;
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #ff6b7a;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #4F8EFF;
+        }
+        
+        .two-columns {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .two-columns .input-group {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="wallet-icon">💼</div>
+            <h1>E-Wallet</h1>
+        </div>
+        
+        <div id="error-message" class="alert"></div>
+        
+        <form id="signup-form">
+            <div class="input-group">
+                <label for="username" class="required">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="email" class="required">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="password" class="required">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="confirm-password" class="required">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="phone_no">Phone Number</label>
+                <input type="tel" id="phone_no" name="phone_no">
+            </div>
+            
+            <div class="input-group">
+                <label for="nid">National ID</label>
+                <input type="text" id="nid" name="nid">
+            </div>
+            
+            <button type="submit" class="signup-btn">Create Account</button>
+        </form>
+        
+        <div class="login-link">
+            Already have an account? <a href="login.html">Login</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const phoneNo = document.getElementById('phone_no').value;
+            const nid = document.getElementById('nid').value;
+            
+            // Validation
+            const errorMessage = document.getElementById('error-message');
+            
+            if (!username || !email || !password || !confirmPassword) {
+                errorMessage.textContent = 'Please fill in all required fields.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                errorMessage.textContent = 'Passwords do not match.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            const userData = {
+                user_id: 'user_' + Date.now(), 
+                username: username,
+                password: password,
+                phone_no: phoneNo,
+                nid: nid,
+                email: email,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+            
+            console.log('User data:', userData);
+            
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>
