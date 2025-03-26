@@ -1,724 +1,787 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Modern E-Wallet</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
     <style>
-        /* Additional styles for clickable service items */
-        .service-item {
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+      /* Additional styles for clickable service items */
+      .service-item {
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .service-item:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .service-item a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+      }
+      /* Modal styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(10, 14, 23, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+      }
+
+      .modal-container {
+        background: linear-gradient(135deg, #1a2235 0%, #141c2e 100%);
+        width: 90%;
+        max-width: 420px;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        position: relative;
+        height: 90vh;
+        overflow: auto;
+      }
+
+      .modal-header {
+        padding: 20px;
+        background: linear-gradient(180deg, #111726 0%, #0a0e17 100%);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #2a3446;
+      }
+
+      .modal-title {
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .modal-title i {
+        color: #4f8eff;
+      }
+
+      .close-modal {
+        color: #ffffff;
+        font-size: 20px;
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
+
+      .modal-body {
+        padding: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #dcdcdc;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #2a3446;
+        background-color: #141c2e;
+        color: #ffffff;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: border-color 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: #4f8eff;
+        outline: none;
+      }
+
+      .input-icon-wrapper {
+        position: relative;
+      }
+
+      .input-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        color: #4f8eff;
+      }
+
+      .expiry-cvv-container {
+        display: flex;
+        gap: 15px;
+      }
+
+      .expiry-cvv-container .form-group {
+        flex: 1;
+      }
+
+      .card-preview {
+        margin: 20px 0;
+        height: 200px;
+        border-radius: 12px;
+        padding: 20px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: linear-gradient(45deg, #4f8eff 0%, #2563eb 100%);
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        transition: background 0.3s;
+      }
+
+      .card-preview-visa {
+        background: linear-gradient(45deg, #4f8eff 0%, #2563eb 100%);
+      }
+
+      .card-preview-mastercard {
+        background: linear-gradient(45deg, #eb4c3a 0%, #cf2e21 100%);
+      }
+
+      .card-preview-amex {
+        background: linear-gradient(45deg, #30a3db 0%, #1e88be 100%);
+      }
+
+      .card-chip {
+        width: 40px;
+        height: 30px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+
+      .card-number-preview {
+        font-size: 20px;
+        color: #ffffff;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+      }
+
+      .card-details-preview {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .card-holder-preview,
+      .card-date-preview {
+        color: #ffffff;
+      }
+
+      .card-holder-preview span,
+      .card-date-preview span {
+        display: block;
+        font-size: 12px;
+        opacity: 0.8;
+        margin-bottom: 5px;
+      }
+
+      .card-type-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 30px;
+        color: #ffffff;
+      }
+
+      .modal-footer {
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #2a3446;
+      }
+
+      .cancel-btn,
+      .add-card-btn {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .cancel-btn {
+        background-color: transparent;
+        color: #dcdcdc;
+        border: 1px solid #2a3446;
+      }
+
+      .cancel-btn:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      .add-card-btn {
+        background: linear-gradient(180deg, #4f8eff 0%, #2563eb 100%);
+        color: #ffffff;
+        border: none;
+        flex-grow: 1;
+        margin-left: 10px;
+      }
+
+      .add-card-btn:hover {
+        background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+      }
+
+      /* Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
         }
-        
-        .service-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        to {
+          opacity: 1;
         }
-        
-        .service-item a {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-                /* Modal styles */
-                .modal-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background-color: rgba(10, 14, 23, 0.8);
-                    display: none;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 1000;
-                    backdrop-filter: blur(5px);
-                }
-                
-                .modal-container {
-                    background: linear-gradient(135deg, #1A2235 0%, #141C2E 100%);
-                    width: 90%;
-                    max-width: 420px;
-                    border-radius: 16px;
-                    overflow: hidden;
-                    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-                    position: relative;
-                    height: 90vh;
-                    overflow: auto;
-                }
-                
-                .modal-header {
-                    padding: 20px;
-                    background: linear-gradient(180deg, #111726 0%, #0A0E17 100%);
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    border-bottom: 1px solid #2A3446;
-                }
-                
-                .modal-title {
-                    color: #ffffff;
-                    font-size: 18px;
-                    font-weight: 600;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
-                
-                .modal-title i {
-                    color: #4F8EFF;
-                }
-                
-                .close-modal {
-                    color: #ffffff;
-                    font-size: 20px;
-                    cursor: pointer;
-                    background: none;
-                    border: none;
-                }
-                
-                .modal-body {
-                    padding: 20px;
-                }
-                
-                .form-group {
-                    margin-bottom: 20px;
-                }
-                
-                .form-group label {
-                    display: block;
-                    margin-bottom: 8px;
-                    color: #dcdcdc;
-                    font-weight: 500;
-                    font-size: 14px;
-                }
-                
-                .form-group input,
-                .form-group select {
-                    width: 100%;
-                    padding: 12px 15px;
-                    border: 1px solid #2A3446;
-                    background-color: #141C2E;
-                    color: #ffffff;
-                    border-radius: 8px;
-                    font-size: 15px;
-                    transition: border-color 0.3s;
-                }
-                
-                .form-group input:focus,
-                .form-group select:focus {
-                    border-color: #4F8EFF;
-                    outline: none;
-                }
-                
-                .input-icon-wrapper {
-                    position: relative;
-                }
-                
-                .input-icon {
-                    position: absolute;
-                    right: 15px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    color: #4F8EFF;
-                }
-                
-                .expiry-cvv-container {
-                    display: flex;
-                    gap: 15px;
-                }
-                
-                .expiry-cvv-container .form-group {
-                    flex: 1;
-                }
-                
-                .card-preview {
-                    margin: 20px 0;
-                    height: 200px;
-                    border-radius: 12px;
-                    padding: 20px;
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    background: linear-gradient(45deg, #4F8EFF 0%, #2563EB 100%);
-                    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
-                    transition: background 0.3s;
-                }
-                
-                .card-preview-visa {
-                    background: linear-gradient(45deg, #4F8EFF 0%, #2563EB 100%);
-                }
-                
-                .card-preview-mastercard {
-                    background: linear-gradient(45deg, #EB4C3A 0%, #CF2E21 100%);
-                }
-                
-                .card-preview-amex {
-                    background: linear-gradient(45deg, #30A3DB 0%, #1E88BE 100%);
-                }
-                
-                .card-chip {
-                    width: 40px;
-                    height: 30px;
-                    background-color: rgba(255, 255, 255, 0.8);
-                    border-radius: 5px;
-                    margin-bottom: 20px;
-                }
-                
-                .card-number-preview {
-                    font-size: 20px;
-                    color: #ffffff;
-                    letter-spacing: 2px;
-                    margin-bottom: 20px;
-                }
-                
-                .card-details-preview {
-                    display: flex;
-                    justify-content: space-between;
-                }
-                
-                .card-holder-preview, .card-date-preview {
-                    color: #ffffff;
-                }
-                
-                .card-holder-preview span, .card-date-preview span {
-                    display: block;
-                    font-size: 12px;
-                    opacity: 0.8;
-                    margin-bottom: 5px;
-                }
-                
-                .card-type-icon {
-                    position: absolute;
-                    top: 20px;
-                    right: 20px;
-                    font-size: 30px;
-                    color: #ffffff;
-                }
-                
-                .modal-footer {
-                    padding: 20px;
-                    display: flex;
-                    justify-content: space-between;
-                    border-top: 1px solid #2A3446;
-                }
-                
-                .cancel-btn, .add-card-btn {
-                    padding: 12px 20px;
-                    border-radius: 8px;
-                    font-size: 15px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                }
-                
-                .cancel-btn {
-                    background-color: transparent;
-                    color: #dcdcdc;
-                    border: 1px solid #2A3446;
-                }
-                
-                .cancel-btn:hover {
-                    background-color: rgba(255, 255, 255, 0.05);
-                }
-                
-                .add-card-btn {
-                    background: linear-gradient(180deg, #4F8EFF 0%, #2563EB 100%);
-                    color: #ffffff;
-                    border: none;
-                    flex-grow: 1;
-                    margin-left: 10px;
-                }
-                
-                .add-card-btn:hover {
-                    background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%);
-                }
-                
-                /* Animation */
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-                
-                .modal-overlay.active {
-                    display: flex;
-                    animation: fadeIn 0.3s ease-out;
-                }
+      }
+
+      .modal-overlay.active {
+        display: flex;
+        animation: fadeIn 0.3s ease-out;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="nav">
-        <span class="nav-title">E-Wallet</span>
-        <div class="profile-icon">
-            <i class="fas fa-user"></i>
-        </div>
+      <span class="nav-title">E-Wallet</span>
+      <div class="profile-icon">
+        <i class="fas fa-user"></i>
+      </div>
     </nav>
-    <div class="container">
-        <div class="bg-element bg-element-1"></div>
-        <div class="bg-element bg-element-2"></div>
+    <div style="background: linear-gradient(180deg, #111726 0%, #0a0e17 100%)">
+      <div class="bg-element bg-element-1"></div>
+      <div class="container">
         <button class="back-button">
-            <i class="fas fa-arrow-left"></i> Back
+          <i class="fas fa-arrow-left"></i> Back
         </button>
         <div class="wave"></div>
         <div class="section-title">
-            <span>My Cards</span>
-            <div class="add-button">
-                <i class="fas fa-plus"></i>
-            </div>
+          <span>My Cards</span>
+          <div class="add-button">
+            <i class="fas fa-plus"></i>
+          </div>
         </div>
         <div class="cards-container">
-            <div class="card card-1">
-                <div class="card-badge">
-                    <i class="fas fa-wifi"></i>
-                </div>
-                <img src="images/chip.jpg" alt="Card Chip" class="card-chip">
-                <div class="card-number">**** **** **** 1234</div>
-                <div class="card-details">
-                    <div class="card-holder">
-                        <span>Card Holder</span>
-                        <div class="card-name">John Doe</div>
-                    </div>
-                    <div class="card-date">
-                        <span>Exp.</span>
-                        <div>12/24</div>
-                    </div>
-                </div>
-                <img src="images/visa.jpg" alt="Visa Logo" class="card-logo">
+          <div class="card card-1">
+            <div class="card-badge">
+              <i class="fas fa-wifi"></i>
             </div>
-            <div class="card card-2">
-                <div class="card-badge">
-                    <i class="fas fa-wifi"></i>
-                </div>
-                <img src="images/chip.jpg" alt="Card Chip" class="card-chip">
-                <div class="card-number">**** **** **** 5678</div>
-                <div class="card-details">
-                    <div class="card-holder">
-                        <span>Card Holder</span>
-                        <div class="card-name">Jane Smith</div>
-                    </div>
-                    <div class="card-date">
-                        <span>Exp.</span>
-                        <div>08/25</div>
-                    </div>
-                </div>
-                <img src="images/mastercard.jpg" alt="Mastercard Logo" class="card-logo">
+            <img src="images/chip.jpg" alt="Card Chip" class="card-chip" />
+            <div class="card-number">**** **** **** 1234</div>
+            <div class="card-details">
+              <div class="card-holder">
+                <span>Card Holder</span>
+                <div class="card-name">John Doe</div>
+              </div>
+              <div class="card-date">
+                <span>Exp.</span>
+                <div>12/24</div>
+              </div>
             </div>
-            <div class="card card-3">
-                <div class="card-badge">
-                    <i class="fas fa-wifi"></i>
-                </div>
-                <img src="images/chip.jpg" alt="Card Chip" class="card-chip">
-                <div class="card-number">**** **** **** 9012</div>
-                <div class="card-details">
-                    <div class="card-holder">
-                        <span>Card Holder</span>
-                        <div class="card-name">David Lee</div>
-                    </div>
-                    <div class="card-date">
-                        <span>Exp.</span>
-                        <div>03/26</div>
-                    </div>
-                </div>
-                <img src="images/amex.png" alt="American Express Logo" class="card-logo">
+            <img src="images/visa.jpg" alt="Visa Logo" class="card-logo" />
+          </div>
+          <div class="card card-2">
+            <div class="card-badge">
+              <i class="fas fa-wifi"></i>
             </div>
+            <img src="images/chip.jpg" alt="Card Chip" class="card-chip" />
+            <div class="card-number">**** **** **** 5678</div>
+            <div class="card-details">
+              <div class="card-holder">
+                <span>Card Holder</span>
+                <div class="card-name">Jane Smith</div>
+              </div>
+              <div class="card-date">
+                <span>Exp.</span>
+                <div>08/25</div>
+              </div>
+            </div>
+            <img
+              src="images/mastercard.jpg"
+              alt="Mastercard Logo"
+              class="card-logo"
+            />
+          </div>
+          <div class="card card-3">
+            <div class="card-badge">
+              <i class="fas fa-wifi"></i>
+            </div>
+            <img src="images/chip.jpg" alt="Card Chip" class="card-chip" />
+            <div class="card-number">**** **** **** 9012</div>
+            <div class="card-details">
+              <div class="card-holder">
+                <span>Card Holder</span>
+                <div class="card-name">David Lee</div>
+              </div>
+              <div class="card-date">
+                <span>Exp.</span>
+                <div>03/26</div>
+              </div>
+            </div>
+            <img
+              src="images/amex.png"
+              alt="American Express Logo"
+              class="card-logo"
+            />
+          </div>
         </div>
         <div class="pagination">
-            <div class="dot active"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
         </div>
-        <div class="user-welcome">
-            Welcome, User!
-        </div>
+        <div class="user-welcome">Welcome, User!</div>
         <div class="info-boxes">
-            <div class="info-box">
-                <div class="info-title">
-                    <i class="fas fa-wallet"></i> Balance
-                </div>
-                <div class="info-value">BDT 1,250.00</div>
+          <div class="info-box">
+            <div class="info-title"><i class="fas fa-wallet"></i> Balance</div>
+            <div class="info-value">BDT 1,250.00</div>
+          </div>
+          <div class="info-box">
+            <div class="info-title">
+              <i class="fas fa-chart-line"></i> Expenses
             </div>
-            <div class="info-box">
-                <div class="info-title">
-                    <i class="fas fa-chart-line"></i> Expenses
-                </div>
-                <div class="info-value">BDT 450.00</div>
-            </div>
+            <div class="info-value">BDT 450.00</div>
+          </div>
         </div>
         <div class="services-title">
-            <i class="fas fa-list-ul"></i> Services
+          <i class="fas fa-list-ul"></i> Services
         </div>
         <div class="services-grid">
-            <div class="service-item" onclick="navigateToService('electricity')">
-                <a href="services/electricity.html">
-                    <div class="service-icon electricity">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <div class="service-name">Electricity</div>
-                </a>
-            </div>
-            <div class="service-item" onclick="navigateToService('internet')">
-                <a href="services/internet.html">
-                    <div class="service-icon internet">
-                        <i class="fas fa-wifi"></i>
-                    </div>
-                    <div class="service-name">Internet</div>
-                </a>
-            </div>
-            <div class="service-item" onclick="navigateToService('mobile')">
-                <a href="services/mobile.html">
-                    <div class="service-icon mobile">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <div class="service-name">Mobile</div>
-                </a>
-            </div>
-            <div class="service-item" onclick="navigateToService('gas')">
-                <a href="services/gas.html">
-                    <div class="service-icon gas">
-                        <i class="fas fa-fire"></i>
-                    </div>
-                    <div class="service-name">Gas</div>
-                </a>
-            </div>
-            <div class="service-item" onclick="navigateToService('money-transfer')">
-                <a href="services/money-transfer.html">
-                    <div class="service-icon money">
-                        <i class="fas fa-money-bill-alt"></i>
-                    </div>
-                    <div class="service-name">Money Transfer</div>
-                </a>
-            </div>
-            <div class="service-item" onclick="navigateToService('subscription')">
-                <a href="services/subscription.html">
-                    <div class="service-icon subscription">
-                        <i class="fas fa-sync-alt"></i>
-                    </div>
-                    <div class="service-name">Subscription</div>
-                </a>
-            </div>
-            <div class="service-item" onclick="navigateToService('shopping')">
-                <a href="services/shopping.html">
-                    <div class="service-icon shopping">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <div class="service-name">Shopping</div>
-                </a>
-            </div>
-            <div class="service-item" onclick="navigateToService('donate')">
-                <a href="services/donate.html">
-                    <div class="service-icon donate">
-                        <i class="fas fa-hand-holding-heart"></i>
-                    </div>
-                    <div class="service-name">Donate</div>
-                </a>
-            </div>
-            <div class="service-item" onclick="navigateToService('merchant')">
-                <a href="services/merchant.html">
-                    <div class="service-icon merchant">
-                        <i class="fas fa-store"></i>
-                    </div>
-                    <div class="service-name">Merchant</div>
-                </a>
-            </div>
-            <div class="service-item" onclick="navigateToService('water')">
-                <a href="services/water.html">
-                    <div class="service-icon water">
-                        <i class="fas fa-tint"></i>
-                    </div>
-                    <div class="service-name">Water</div>
-                </a>
-            </div>
+          <div class="service-item" onclick="navigateToService('electricity')">
+            <a href="services/electricity.html">
+              <div class="service-icon electricity">
+                <i class="fas fa-lightbulb"></i>
+              </div>
+              <div class="service-name">Electricity</div>
+            </a>
+          </div>
+          <div class="service-item" onclick="navigateToService('internet')">
+            <a href="services/internet.html">
+              <div class="service-icon internet">
+                <i class="fas fa-wifi"></i>
+              </div>
+              <div class="service-name">Internet</div>
+            </a>
+          </div>
+          <div class="service-item" onclick="navigateToService('mobile')">
+            <a href="services/mobile.html">
+              <div class="service-icon mobile">
+                <i class="fas fa-mobile-alt"></i>
+              </div>
+              <div class="service-name">Mobile</div>
+            </a>
+          </div>
+          <div class="service-item" onclick="navigateToService('gas')">
+            <a href="services/gas.html">
+              <div class="service-icon gas">
+                <i class="fas fa-fire"></i>
+              </div>
+              <div class="service-name">Gas</div>
+            </a>
+          </div>
+          <div
+            class="service-item"
+            onclick="navigateToService('money-transfer')"
+          >
+            <a href="services/money-transfer.html">
+              <div class="service-icon money">
+                <i class="fas fa-money-bill-alt"></i>
+              </div>
+              <div class="service-name">Money Transfer</div>
+            </a>
+          </div>
+          <div class="service-item" onclick="navigateToService('subscription')">
+            <a href="services/subscription.html">
+              <div class="service-icon subscription">
+                <i class="fas fa-sync-alt"></i>
+              </div>
+              <div class="service-name">Subscription</div>
+            </a>
+          </div>
+          <div class="service-item" onclick="navigateToService('shopping')">
+            <a href="services/shopping.html">
+              <div class="service-icon shopping">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <div class="service-name">Shopping</div>
+            </a>
+          </div>
+          <div class="service-item" onclick="navigateToService('donate')">
+            <a href="services/donate.html">
+              <div class="service-icon donate">
+                <i class="fas fa-hand-holding-heart"></i>
+              </div>
+              <div class="service-name">Donate</div>
+            </a>
+          </div>
+          <div class="service-item" onclick="navigateToService('merchant')">
+            <a href="services/merchant.html">
+              <div class="service-icon merchant">
+                <i class="fas fa-store"></i>
+              </div>
+              <div class="service-name">Merchant</div>
+            </a>
+          </div>
+          <div class="service-item" onclick="navigateToService('water')">
+            <a href="services/water.html">
+              <div class="service-icon water">
+                <i class="fas fa-tint"></i>
+              </div>
+              <div class="service-name">Water</div>
+            </a>
+          </div>
         </div>
         <div class="transactions-container">
-            <div class="transactions-header">
-                <div class="transactions-title">
-                    <i class="fas fa-history"></i> Transactions
-                </div>
-                <div class="view-all">View All</div>
+          <div class="transactions-header">
+            <div class="transactions-title">
+              <i class="fas fa-history"></i> Transactions
             </div>
-            <div class="transactions-list">
-                <div class="transaction-item">
-                    <div class="transaction-details">
-                        <div class="transaction-icon">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <div class="transaction-info">
-                            <div class="transaction-name">Shopping</div>
-                            <div class="transaction-date">Today, 10:30 AM</div>
-                        </div>
-                    </div>
-                    <div class="transaction-amount"> BDT -50.00</div>
+            <div class="view-all">View All</div>
+          </div>
+          <div class="transactions-list">
+            <div class="transaction-item">
+              <div class="transaction-details">
+                <div class="transaction-icon">
+                  <i class="fas fa-shopping-cart"></i>
                 </div>
-                <div class="transaction-item">
-                    <div class="transaction-details">
-                        <div class="transaction-icon">
-                            <i class="fas fa-money-bill-alt"></i>
-                        </div>
-                        <div class="transaction-info">
-                            <div class="transaction-name">Salary</div>
-                            <div class="transaction-date">Yesterday, 2:00 PM</div>
-                        </div>
-                    </div>
-                    <div class="transaction-amount"> BDT +1,500.00</div>
+                <div class="transaction-info">
+                  <div class="transaction-name">Shopping</div>
+                  <div class="transaction-date">Today, 10:30 AM</div>
                 </div>
-                <div class="transaction-item">
-                    <div class="transaction-details">
-                        <div class="transaction-icon">
-                            <i class="fas fa-lightbulb"></i>
-                        </div>
-                        <div class="transaction-info">
-                            <div class="transaction-name">Electricity Bill</div>
-                            <div class="transaction-date">2 Days Ago, 7:00 PM</div>
-                        </div>
-                    </div>
-                    <div class="transaction-amount">BDT -120.00</div>
-                </div>
-                <div class="transaction-item">
-                    <div class="transaction-details">
-                        <div class="transaction-icon">
-                            <i class="fas fa-fire"></i>
-                        </div>
-                        <div class="transaction-info">
-                            <div class="transaction-name">Gas Bill</div>
-                            <div class="transaction-date">3 Days Ago, 5:30 PM</div>
-                        </div>
-                    </div>
-                    <div class="transaction-amount">BDT -85.00</div>
-                </div>
+              </div>
+              <div class="transaction-amount">BDT -50.00</div>
             </div>
+            <div class="transaction-item">
+              <div class="transaction-details">
+                <div class="transaction-icon">
+                  <i class="fas fa-money-bill-alt"></i>
+                </div>
+                <div class="transaction-info">
+                  <div class="transaction-name">Salary</div>
+                  <div class="transaction-date">Yesterday, 2:00 PM</div>
+                </div>
+              </div>
+              <div class="transaction-amount">BDT +1,500.00</div>
+            </div>
+            <div class="transaction-item">
+              <div class="transaction-details">
+                <div class="transaction-icon">
+                  <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="transaction-info">
+                  <div class="transaction-name">Electricity Bill</div>
+                  <div class="transaction-date">2 Days Ago, 7:00 PM</div>
+                </div>
+              </div>
+              <div class="transaction-amount">BDT -120.00</div>
+            </div>
+            <div class="transaction-item">
+              <div class="transaction-details">
+                <div class="transaction-icon">
+                  <i class="fas fa-fire"></i>
+                </div>
+                <div class="transaction-info">
+                  <div class="transaction-name">Gas Bill</div>
+                  <div class="transaction-date">3 Days Ago, 5:30 PM</div>
+                </div>
+              </div>
+              <div class="transaction-amount">BDT -85.00</div>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="bg-element bg-element-2"></div>
     </div>
-<div id="addCardModal" class="modal-overlay">
-    <div class="modal-container">
+    <div id="addCardModal" class="modal-overlay">
+      <div class="modal-container">
         <div class="modal-header">
-            <div class="modal-title">
-                <i class="fas fa-credit-card"></i> Add New Card
-            </div>
-            <button class="close-modal" onclick="closeModal()">
-                <i class="fas fa-times"></i>
-            </button>
+          <div class="modal-title">
+            <i class="fas fa-credit-card"></i> Add New Card
+          </div>
+          <button class="close-modal" onclick="closeModal()">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         <div class="modal-body">
-            <div class="card-preview" id="cardPreview">
-                <div class="card-type-icon" id="cardTypeIcon">
-                    <i class="fab fa-cc-visa"></i>
-                </div>
-                <div class="card-chip"></div>
-                <div class="card-number-preview" id="cardNumberPreview">
-                    **** **** **** ****
-                </div>
-                <div class="card-details-preview">
-                    <div class="card-holder-preview">
-                        <span>Card Holder</span>
-                        <div id="cardHolderPreview">YOUR NAME</div>
-                    </div>
-                    <div class="card-date-preview">
-                        <span>Expires</span>
-                        <div id="cardExpiryPreview">MM/YY</div>
-                    </div>
-                </div>
+          <div class="card-preview" id="cardPreview">
+            <div class="card-type-icon" id="cardTypeIcon">
+              <i class="fab fa-cc-visa"></i>
             </div>
-            
-            <form id="addCardForm">
-                <div class="form-group">
-                    <label for="cardHolder">Card Holder Name</label>
-                    <div class="input-icon-wrapper">
-                        <input type="text" id="cardHolder" placeholder="Name on card" required>
-                        <div class="input-icon">
-                            <i class="fas fa-user"></i>
-                        </div>
-                    </div>
+            <div class="card-chip"></div>
+            <div class="card-number-preview" id="cardNumberPreview">
+              **** **** **** ****
+            </div>
+            <div class="card-details-preview">
+              <div class="card-holder-preview">
+                <span>Card Holder</span>
+                <div id="cardHolderPreview">YOUR NAME</div>
+              </div>
+              <div class="card-date-preview">
+                <span>Expires</span>
+                <div id="cardExpiryPreview">MM/YY</div>
+              </div>
+            </div>
+          </div>
+
+          <form id="addCardForm">
+            <div class="form-group">
+              <label for="cardHolder">Card Holder Name</label>
+              <div class="input-icon-wrapper">
+                <input
+                  type="text"
+                  id="cardHolder"
+                  placeholder="Name on card"
+                  required
+                />
+                <div class="input-icon">
+                  <i class="fas fa-user"></i>
                 </div>
-                
-                <div class="form-group">
-                    <label for="cardNumber">Card Number</label>
-                    <div class="input-icon-wrapper">
-                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
-                        <div class="input-icon">
-                            <i class="fas fa-credit-card"></i>
-                        </div>
-                    </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cardNumber">Card Number</label>
+              <div class="input-icon-wrapper">
+                <input
+                  type="text"
+                  id="cardNumber"
+                  placeholder="1234 5678 9012 3456"
+                  maxlength="19"
+                  required
+                />
+                <div class="input-icon">
+                  <i class="fas fa-credit-card"></i>
                 </div>
-                
-                <div class="expiry-cvv-container">
-                    <div class="form-group">
-                        <label for="expiryDate">Expiry Date</label>
-                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="cvv">CVV</label>
-                        <input type="password" id="cvv" placeholder="***" maxlength="4" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="cardType">Card Type</label>
-                    <select id="cardType" required>
-                        <option value="">Select Card Type</option>
-                        <option value="visa">Visa</option>
-                        <option value="mastercard">Mastercard</option>
-                        <option value="amex">American Express</option>
-                    </select>
-                </div>
-            </form>
+              </div>
+            </div>
+
+            <div class="expiry-cvv-container">
+              <div class="form-group">
+                <label for="expiryDate">Expiry Date</label>
+                <input
+                  type="text"
+                  id="expiryDate"
+                  placeholder="MM/YY"
+                  maxlength="5"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input
+                  type="password"
+                  id="cvv"
+                  placeholder="***"
+                  maxlength="4"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cardType">Card Type</label>
+              <select id="cardType" required>
+                <option value="">Select Card Type</option>
+                <option value="visa">Visa</option>
+                <option value="mastercard">Mastercard</option>
+                <option value="amex">American Express</option>
+              </select>
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
-            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-            <button class="add-card-btn" onclick="saveCard()">Add Card</button>
+          <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+          <button class="add-card-btn" onclick="saveCard()">Add Card</button>
         </div>
+      </div>
     </div>
-</div>
     <script>
-        function navigateToService(service) {
-            console.log(`Navigating to ${service} service page`);
+      link;
+      function navigateToService(service) {
+        console.log(`Navigating to ${service} service page`);
+      }
+
+      document
+        .querySelector(".back-button")
+        .addEventListener("click", function () {
+          window.history.back();
+        });
+      document
+        .querySelector(".profile-icon")
+        .addEventListener("click", function () {
+          window.location.href = "profile.html";
+        });
+      function openCardModal() {
+        document.getElementById("addCardModal").classList.add("active");
+      }
+
+      function closeModal() {
+        document.getElementById("addCardModal").classList.remove("active");
+      }
+
+      document
+        .getElementById("cardNumber")
+        .addEventListener("input", function (e) {
+          let value = e.target.value
+            .replace(/\s+/g, "")
+            .replace(/[^0-9]/gi, "");
+          let formattedValue = "";
+
+          for (let i = 0; i < value.length; i++) {
+            if (i > 0 && i % 4 === 0) {
+              formattedValue += " ";
+            }
+            formattedValue += value[i];
+          }
+
+          e.target.value = formattedValue;
+
+          let cardNumberPreview = document.getElementById("cardNumberPreview");
+          if (value.length > 0) {
+            let maskedNumber =
+              "**** **** **** " + value.substr(value.length - 4);
+            if (value.length <= 4) {
+              maskedNumber = "**** **** **** " + value.padEnd(4, "*");
+            }
+            cardNumberPreview.textContent = maskedNumber;
+          } else {
+            cardNumberPreview.textContent = "**** **** **** ****";
+          }
+
+          detectCardType(value);
+        });
+
+      document
+        .getElementById("expiryDate")
+        .addEventListener("input", function (e) {
+          let value = e.target.value.replace(/\D/g, "");
+
+          if (value.length > 2) {
+            value = value.substr(0, 2) + "/" + value.substr(2, 2);
+          }
+
+          e.target.value = value;
+
+          let expiryPreview = document.getElementById("cardExpiryPreview");
+          if (value.length > 0) {
+            expiryPreview.textContent = value;
+          } else {
+            expiryPreview.textContent = "MM/YY";
+          }
+        });
+
+      document
+        .getElementById("cardHolder")
+        .addEventListener("input", function (e) {
+          let value = e.target.value;
+          let cardHolderPreview = document.getElementById("cardHolderPreview");
+
+          if (value.length > 0) {
+            cardHolderPreview.textContent = value.toUpperCase();
+          } else {
+            cardHolderPreview.textContent = "YOUR NAME";
+          }
+        });
+
+      document
+        .getElementById("cardType")
+        .addEventListener("change", function (e) {
+          updateCardTypeUI(e.target.value);
+        });
+
+      function detectCardType(number) {
+        let cardType = "";
+
+        if (number.startsWith("4")) {
+          cardType = "visa";
+        } else if (number.startsWith("5")) {
+          cardType = "mastercard";
+        } else if (number.startsWith("34") || number.startsWith("37")) {
+          cardType = "amex";
         }
 
-        document.querySelector('.back-button').addEventListener('click', function() {
-            window.history.back();
-        });
-        document.querySelector('.profile-icon').addEventListener('click', function() {
-            window.location.href = 'profile.html';
-        });
-        function openCardModal() {
-            document.getElementById('addCardModal').classList.add('active');
+        if (cardType) {
+          document.getElementById("cardType").value = cardType;
+          updateCardTypeUI(cardType);
         }
-        
-        function closeModal() {
-            document.getElementById('addCardModal').classList.remove('active');
+      }
+
+      function updateCardTypeUI(cardType) {
+        const cardPreview = document.getElementById("cardPreview");
+        const cardTypeIcon = document.getElementById("cardTypeIcon");
+
+        cardPreview.className = "card-preview";
+
+        if (cardType === "visa") {
+          cardPreview.classList.add("card-preview-visa");
+          cardTypeIcon.innerHTML = '<i class="fab fa-cc-visa"></i>';
+        } else if (cardType === "mastercard") {
+          cardPreview.classList.add("card-preview-mastercard");
+          cardTypeIcon.innerHTML = '<i class="fab fa-cc-mastercard"></i>';
+        } else if (cardType === "amex") {
+          cardPreview.classList.add("card-preview-amex");
+          cardTypeIcon.innerHTML = '<i class="fab fa-cc-amex"></i>';
         }
-        
-        document.getElementById('cardNumber').addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-            let formattedValue = '';
-            
-            for (let i = 0; i < value.length; i++) {
-                if (i > 0 && i % 4 === 0) {
-                    formattedValue += ' ';
-                }
-                formattedValue += value[i];
-            }
-            
-            e.target.value = formattedValue;
-            
-            let cardNumberPreview = document.getElementById('cardNumberPreview');
-            if (value.length > 0) {
-                let maskedNumber = '**** **** **** ' + value.substr(value.length - 4);
-                if (value.length <= 4) {
-                    maskedNumber = '**** **** **** ' + value.padEnd(4, '*');
-                }
-                cardNumberPreview.textContent = maskedNumber;
-            } else {
-                cardNumberPreview.textContent = '**** **** **** ****';
-            }
-            
-            detectCardType(value);
-        });
-        
-        document.getElementById('expiryDate').addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, '');
-            
-            if (value.length > 2) {
-                value = value.substr(0, 2) + '/' + value.substr(2, 2);
-            }
-            
-            e.target.value = value;
-            
-            let expiryPreview = document.getElementById('cardExpiryPreview');
-            if (value.length > 0) {
-                expiryPreview.textContent = value;
-            } else {
-                expiryPreview.textContent = 'MM/YY';
-            }
-        });
-        
-        document.getElementById('cardHolder').addEventListener('input', function (e) {
-            let value = e.target.value;
-            let cardHolderPreview = document.getElementById('cardHolderPreview');
-            
-            if (value.length > 0) {
-                cardHolderPreview.textContent = value.toUpperCase();
-            } else {
-                cardHolderPreview.textContent = 'YOUR NAME';
-            }
-        });
-        
-        document.getElementById('cardType').addEventListener('change', function (e) {
-            updateCardTypeUI(e.target.value);
-        });
-        
-        function detectCardType(number) {
-            let cardType = '';
-            
-            if (number.startsWith('4')) {
-                cardType = 'visa';
-            } else if (number.startsWith('5')) {
-                cardType = 'mastercard';
-            } else if (number.startsWith('34') || number.startsWith('37')) {
-                cardType = 'amex';
-            }
-            
-            if (cardType) {
-                document.getElementById('cardType').value = cardType;
-                updateCardTypeUI(cardType);
-            }
+      }
+
+      function saveCard() {
+        const cardHolder = document.getElementById("cardHolder").value;
+        const cardNumber = document
+          .getElementById("cardNumber")
+          .value.replace(/\s/g, "");
+        const expiryDate = document.getElementById("expiryDate").value;
+        const cvv = document.getElementById("cvv").value;
+        const cardType = document.getElementById("cardType").value;
+
+        if (!cardHolder || !cardNumber || !expiryDate || !cvv || !cardType) {
+          alert("Please fill in all required fields");
+          return;
         }
-        
-        function updateCardTypeUI(cardType) {
-            const cardPreview = document.getElementById('cardPreview');
-            const cardTypeIcon = document.getElementById('cardTypeIcon');
-            
-            cardPreview.className = 'card-preview';
-            
-            if (cardType === 'visa') {
-                cardPreview.classList.add('card-preview-visa');
-                cardTypeIcon.innerHTML = '<i class="fab fa-cc-visa"></i>';
-            } else if (cardType === 'mastercard') {
-                cardPreview.classList.add('card-preview-mastercard');
-                cardTypeIcon.innerHTML = '<i class="fab fa-cc-mastercard"></i>';
-            } else if (cardType === 'amex') {
-                cardPreview.classList.add('card-preview-amex');
-                cardTypeIcon.innerHTML = '<i class="fab fa-cc-amex"></i>';
-            }
-        }
-        
-        function saveCard() {
-            const cardHolder = document.getElementById('cardHolder').value;
-            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-            const expiryDate = document.getElementById('expiryDate').value;
-            const cvv = document.getElementById('cvv').value;
-            const cardType = document.getElementById('cardType').value;
-            
-            if (!cardHolder || !cardNumber || !expiryDate || !cvv || !cardType) {
-                alert('Please fill in all required fields');
-                return;
-            }
-            
-            const newCard = {
-                card_id: 'card_' + Date.now(), 
-                user_id: 'current_user_id', 
-                card_number: cardNumber,
-                card_type: cardType,
-                expiry_date: expiryDate,
-                added_at: new Date().toISOString()
-            };
-            
-            console.log('New card added:', newCard);
-            
-            alert('Card added successfully!');
-            closeModal();
-            
-        }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('.add-button').addEventListener('click', openCardModal);
-        });
+
+        const newCard = {
+          card_id: "card_" + Date.now(),
+          user_id: "current_user_id",
+          card_number: cardNumber,
+          card_type: cardType,
+          expiry_date: expiryDate,
+          added_at: new Date().toISOString(),
+        };
+
+        console.log("New card added:", newCard);
+
+        alert("Card added successfully!");
+        closeModal();
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .querySelector(".add-button")
+          .addEventListener("click", openCardModal);
+      });
     </script>
-</body>
+  </body>
 </html>

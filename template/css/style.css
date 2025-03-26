@@ -110,17 +110,19 @@ body {
 
 /* Container */
 .container {
-    background: linear-gradient(180deg, #111726 0%, #0A0E17 100%);
+    /* background: linear-gradient(180deg, #111726 0%, #0A0E17 100%); */
     min-height: calc(100vh - 66px);
     padding: 20px;
     position: relative;
     overflow: hidden;
+    max-width: 1060px;
+    margin: 0 auto;
 }
 
 /* Back Button */
 .back-button {
     color: #e0e0e0;
-    background: rgba(255,255,255,0.1);
+    background: transparent;
     border: none;
     font-size: 1.2rem;
     cursor: pointer;
@@ -128,16 +130,8 @@ body {
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 8px 15px;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255,255,255,0.05);
 }
 
-.back-button:hover {
-    background: rgba(255,255,255,0.15);
-    transform: translateX(-5px);
-}
 
 /* Cards Section */
 .section-title {
@@ -152,7 +146,7 @@ body {
 }
 
 .add-button {
-    background: linear-gradient(135deg, #5b86e5, #36d1dc);
+    background: transparent;
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -161,27 +155,17 @@ body {
     justify-content: center;
     cursor: pointer;
     font-size: 1.2rem;
-    box-shadow: 0 3px 15px rgba(91, 134, 229, 0.4);
+    /* box-shadow: 0 3px 15px rgba(91, 134, 229, 0.4); */
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    border: 1px solid;
 }
 
 .add-button:hover {
-    transform: rotate(90deg) scale(1.1);
+    transform: rotate(90deg);
 }
 
-.add-button::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: rgba(255,255,255,0.1);
-    transform: rotate(45deg);
-    transition: all 0.6s ease;
-}
 
 .add-button:hover::before {
     top: 150%;
@@ -431,7 +415,6 @@ body {
         rgba(255, 255, 255, 0.05),
         transparent
     );
-    transform: rotate(45deg);
     transition: 0.8s;
 }
 
@@ -488,7 +471,6 @@ body {
     background: linear-gradient(90deg, #ffffff, #e0e0e0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    transform: scale(1.05);
 }
 
 /* Services Section */
@@ -517,23 +499,23 @@ body {
 }
 
 .service-item {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
+    /* background: rgba(255, 255, 255, 0.05); */
+    /* border-radius: 12px; */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     padding: 15px 10px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    animation: fadeInScale 0.5s ease-out forwards;
-    opacity: 0;
-    transform: scale(0.8);
-    position: relative;
-    overflow: hidden;
+    /* backdrop-filter: blur(5px); */
+    /* border: 1px solid rgba(255, 255, 255, 0.05); */
+    /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); */
+    /* animation: fadeInScale 0.5s ease-out forwards; */
+    /* opacity: 0; */
+    /* transform: scale(0.8); */
+    /* position: relative; */
+    /* overflow: hidden;*/
 }
 
 @keyframes fadeInScale {
@@ -543,27 +525,6 @@ body {
     }
 }
 
-.service-item::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
-    left: -100%;
-    top: 0;
-    transition: left 0.5s ease-in-out;
-}
-
-.service-item:hover::before {
-    left: 100%;
-}
-
-.service-item:hover {
-    transform: translateY(-8px);
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
 
 .service-icon {
     width: 40px;
@@ -572,17 +533,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: 6px;
     transition: all 0.3s ease;
 }
 
-.service-item:hover .service-icon {
-    transform: scale(1.1) rotate(5deg);
-}
 
 .service-name {
     color: #f0f0f0;
-    font-size: 0.75rem;
     text-align: center;
     font-weight: 500;
     transition: all 0.3s ease;
@@ -590,7 +547,6 @@ body {
 
 .service-item:hover .service-name {
     color: #fff;
-    transform: translateY(2px);
 }
 
 /* Service Icon Colors */
@@ -731,7 +687,6 @@ body {
     cursor: pointer;
     animation: slideInRight 0.5s ease-out forwards;
     opacity: 0;
-    transform: translateX(20px);
 }
 
 @keyframes slideInRight {
@@ -745,10 +700,6 @@ body {
     border-bottom: none;
 }
 
-.transaction-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateX(5px);
-}
 
 .transactions-list .transaction-item:nth-child(1) { animation-delay: 0.1s; }
 .transactions-list .transaction-item:nth-child(2) { animation-delay: 0.2s; }
@@ -774,10 +725,6 @@ body {
     transition: all 0.3s ease;
 }
 
-.transaction-item:hover .transaction-icon {
-    transform: scale(1.1) rotate(5deg);
-    background: rgba(88, 165, 248, 0.2);
-}
 
 .transaction-icon i {
     color: #58a5f8;
@@ -816,7 +763,6 @@ body {
 
 .transaction-item:hover .transaction-amount {
     color: #fff;
-    transform: scale(1.05);
 }
 
 /* Payment Form Styling */
