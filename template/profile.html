@@ -1,353 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Profile - E-Wallet</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(180deg, #111726 0%, #0A0E17 100%);
-            min-height: 100vh;
-            color: #ffffff;
-        }
-        
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: rgba(10, 14, 23, 0.8);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        
-        .nav-title {
-            font-size: 22px;
-            font-weight: 600;
-        }
-        
-        .profile-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #4F8EFF;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-        
-        .container {
-            position: relative;
-            padding: 20px;
-            max-width: 768px;
-            margin: 0 auto;
-        }
-        
-        .bg-element {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(79, 142, 255, 0.15) 0%, rgba(16, 24, 40, 0) 70%);
-        }
-        
-        .bg-element-1 {
-            width: 300px;
-            height: 300px;
-            top: -50px;
-            right: -100px;
-        }
-        
-        .bg-element-2 {
-            width: 400px;
-            height: 400px;
-            bottom: 0;
-            left: -200px;
-        }
-        
-        .back-button {
-            background: none;
-            border: none;
-            color: #4F8EFF;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-        
-        .profile-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px 0;
-            position: relative;
-        }
-        
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background-color: #1A2235;
-            border: 4px solid #4F8EFF;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 50px;
-            color: #4F8EFF;
-            position: relative;
-        }
-        
-        .edit-avatar {
-            position: absolute;
-            bottom: 10px;
-            right: 5px;
-            background-color: #4F8EFF;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            color: white;
-            font-size: 14px;
-        }
-        
-        .profile-name {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .profile-email {
-            color: #a0a0a0;
-            margin-bottom: 10px;
-        }
-        
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 25px 0 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section-title i {
-            color: #4F8EFF;
-        }
-        
-        .profile-card {
-            background-color: #1A2235;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #2A3446;
-        }
-        
-        .info-row:last-child {
-            border-bottom: none;
-        }
-        
-        .info-label {
-            color: #a0a0a0;
-        }
-        
-        .info-value {
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-edit {
-            color: #4F8EFF;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
-        .verification-badge {
-            color: #4CAF50;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-        }
-        
-        .action-button {
-            width: 100%;
-            padding: 15px;
-            border-radius: 8px;
-            border: none;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .btn-primary {
-            background-color: #4F8EFF;
-            color: white;
-        }
-        
-        .btn-outline {
-            background: none;
-            border: 1px solid #2A3446;
-            color: white;
-        }
-        
-        .btn-danger {
-            background: none;
-            border: 1px solid #DC3545;
-            color: #DC3545;
-        }
-        
-        .timestamps {
-            font-size: 14px;
-            color: #a0a0a0;
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/profile.css" />
+  </head>
+  <body>
     <nav class="nav">
-        <span class="nav-title">User Profile</span>
-        <div class="profile-icon">
-            <i class="fas fa-user"></i>
-        </div>
+      <span class="nav-title">User Profile</span>
+      <div class="profile-icon">
+        <i class="fas fa-user"></i>
+      </div>
     </nav>
-    
+
     <div class="container">
-        <div class="bg-element bg-element-1"></div>
-        <div class="bg-element bg-element-2"></div>
-        
-        <button class="back-button" onclick="window.location.href='home.html'">
-            <i class="fas fa-arrow-left"></i> Back to Dashboard
-        </button>
-        
-        <div class="profile-header">
-            <div class="profile-avatar">
-                <i class="fas fa-user"></i>
-                <div class="edit-avatar">
-                    <i class="fas fa-camera"></i>
-                </div>
-            </div>
-            <h1 class="profile-name">rakibhasan</h1>
-            <div class="profile-email">rakib@gmail.com</div>
+      <div class="bg-element bg-element-1"></div>
+      <div class="bg-element bg-element-2"></div>
+
+      <button class="back-button" onclick="window.location.href='home.html'">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </button>
+
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <i class="fas fa-user"></i>
+          <div class="edit-avatar">
+            <i class="fas fa-camera"></i>
+          </div>
         </div>
-        
-        <div class="section-title">
-            <i class="fas fa-user-circle"></i> User Information
+        <h1 class="profile-name">rakibhasan</h1>
+        <div class="profile-email">rakib@gmail.com</div>
+      </div>
+
+      <div class="section-title">
+        <i class="fas fa-user-circle"></i> User Information
+      </div>
+
+      <div class="profile-card">
+        <div class="info-row">
+          <div class="info-label">User ID</div>
+          <div class="info-value">USR1234567</div>
         </div>
-        
-        <div class="profile-card">
-            <div class="info-row">
-                <div class="info-label">User ID</div>
-                <div class="info-value">USR1234567</div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Username</div>
-                <div class="info-value">
-                    johndoe123
-                    <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
-                </div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Password</div>
-                <div class="info-value">
-                    ••••••••••
-                    <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
-                </div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Phone Number</div>
-                <div class="info-value">
-                    01999370967
-                    <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
-                </div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">National ID</div>
-                <div class="info-value">
-                    8004621945
-                    <div class="verification-badge">
-                        <i class="fas fa-check-circle"></i> Verified
-                    </div>
-                </div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Email</div>
-                <div class="info-value">
-                    rakib hasan
-                    <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
-                </div>
-            </div>
+        <div class="info-row">
+          <div class="info-label">Username</div>
+          <div class="info-value">
+            johndoe123
+            <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
+          </div>
         </div>
-        
-        <div class="timestamps">
-            <p>Account created: March 15, 2023 at 10:23 AM</p>
-            <p>Last updated: March 20, 2025 at 3:45 PM</p>
+        <div class="info-row">
+          <div class="info-label">Password</div>
+          <div class="info-value">
+            ••••••••••
+            <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
+          </div>
         </div>
-        
-        <button class="action-button btn-primary">
-            <i class="fas fa-save"></i> Save Changes
-        </button>
-        
-        <button class="action-button btn-outline">
-            <i class="fas fa-cog"></i> Account Settings
-        </button>
-        
-        <button class="action-button btn-danger">
-            <i class="fas fa-sign-out-alt"></i> Log Out
-        </button>
+        <div class="info-row">
+          <div class="info-label">Phone Number</div>
+          <div class="info-value">
+            01999370967
+            <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">National ID</div>
+          <div class="info-value">
+            8004621945
+            <div class="verification-badge">
+              <i class="fas fa-check-circle"></i> Verified
+            </div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Email</div>
+          <div class="info-value">
+            rakib hasan
+            <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="timestamps">
+        <p>Account created: March 15, 2023 at 10:23 AM</p>
+        <p>Last updated: March 20, 2025 at 3:45 PM</p>
+      </div>
+
+      <button class="action-button btn-primary">
+        <i class="fas fa-save"></i> Save Changes
+      </button>
+
+      <button class="action-button btn-outline">
+        <i class="fas fa-cog"></i> Account Settings
+      </button>
+
+      <button class="action-button btn-danger">
+        <i class="fas fa-sign-out-alt"></i> Log Out
+      </button>
     </div>
-    
+
     <script>
-        document.querySelector('.back-button').addEventListener('click', function() {
-            window.location.href = 'home.html';
+      document
+        .querySelector(".back-button")
+        .addEventListener("click", function () {
+          window.location.href = "home.html";
         });
-        
-        document.querySelector('.btn-danger').addEventListener('click', function() {
-            if (confirm('Are you sure you want to log out?')) {
-                window.location.href = 'login.html';
-            }
+
+      document
+        .querySelector(".btn-danger")
+        .addEventListener("click", function () {
+          if (confirm("Are you sure you want to log out?")) {
+            window.location.href = "login.html";
+          }
         });
-        
-        document.querySelectorAll('.btn-edit').forEach(button => {
-            button.addEventListener('click', function() {
-                const infoType = this.closest('.info-row').querySelector('.info-label').textContent;
-                alert(`Edit ${infoType} functionality would go here`);
-            });
+
+      document.querySelectorAll(".btn-edit").forEach((button) => {
+        button.addEventListener("click", function () {
+          const infoType =
+            this.closest(".info-row").querySelector(".info-label").textContent;
+          alert(`Edit ${infoType} functionality would go here`);
         });
-        
-        document.querySelector('.edit-avatar').addEventListener('click', function() {
-            alert('Change profile picture functionality would go here');
+      });
+
+      document
+        .querySelector(".edit-avatar")
+        .addEventListener("click", function () {
+          alert("Change profile picture functionality would go here");
         });
     </script>
-</body>
+  </body>
 </html>
