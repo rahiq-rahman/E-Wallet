@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Modern E-Wallet</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -270,6 +273,10 @@
       <div class="profile-icon">
         <i class="fas fa-user"></i>
       </div>
+      <span class="nav-title">E-Wallet</span>
+      <div class="profile-icon">
+        <i class="fas fa-user"></i>
+      </div>
     </nav>
     <div style="background: linear-gradient(180deg, #111726 0%, #0a0e17 100%)">
       <div class="bg-element bg-element-1"></div>
@@ -517,7 +524,15 @@
     </div>
     <div id="addCardModal" class="modal-overlay">
       <div class="modal-container">
+    <div id="addCardModal" class="modal-overlay">
+      <div class="modal-container">
         <div class="modal-header">
+          <div class="modal-title">
+            <i class="fas fa-credit-card"></i> Add New Card
+          </div>
+          <button class="close-modal" onclick="closeModal()">
+            <i class="fas fa-times"></i>
+          </button>
           <div class="modal-title">
             <i class="fas fa-credit-card"></i> Add New Card
           </div>
@@ -612,19 +627,112 @@
               </select>
             </div>
           </form>
+          <div class="card-preview" id="cardPreview">
+            <div class="card-type-icon" id="cardTypeIcon">
+              <i class="fab fa-cc-visa"></i>
+            </div>
+            <div class="card-chip"></div>
+            <div class="card-number-preview" id="cardNumberPreview">
+              **** **** **** ****
+            </div>
+            <div class="card-details-preview">
+              <div class="card-holder-preview">
+                <span>Card Holder</span>
+                <div id="cardHolderPreview">YOUR NAME</div>
+              </div>
+              <div class="card-date-preview">
+                <span>Expires</span>
+                <div id="cardExpiryPreview">MM/YY</div>
+              </div>
+            </div>
+          </div>
+
+          <form id="addCardForm">
+            <div class="form-group">
+              <label for="cardHolder">Card Holder Name</label>
+              <div class="input-icon-wrapper">
+                <input
+                  type="text"
+                  id="cardHolder"
+                  placeholder="Name on card"
+                  required
+                />
+                <div class="input-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cardNumber">Card Number</label>
+              <div class="input-icon-wrapper">
+                <input
+                  type="text"
+                  id="cardNumber"
+                  placeholder="1234 5678 9012 3456"
+                  maxlength="19"
+                  required
+                />
+                <div class="input-icon">
+                  <i class="fas fa-credit-card"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="expiry-cvv-container">
+              <div class="form-group">
+                <label for="expiryDate">Expiry Date</label>
+                <input
+                  type="text"
+                  id="expiryDate"
+                  placeholder="MM/YY"
+                  maxlength="5"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input
+                  type="password"
+                  id="cvv"
+                  placeholder="***"
+                  maxlength="4"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cardType">Card Type</label>
+              <select id="cardType" required>
+                <option value="">Select Card Type</option>
+                <option value="visa">Visa</option>
+                <option value="mastercard">Mastercard</option>
+                <option value="amex">American Express</option>
+              </select>
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
+          <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+          <button class="add-card-btn" onclick="saveCard()">Add Card</button>
           <button class="cancel-btn" onclick="closeModal()">Cancel</button>
           <button class="add-card-btn" onclick="saveCard()">Add Card</button>
         </div>
       </div>
     </div>
+      </div>
+    </div>
     <script>
-      link;
       function navigateToService(service) {
         console.log(`Navigating to ${service} service page`);
       }
 
+      document
+        .querySelector(".back-button")
+        .addEventListener("click", function () {
+          window.history.back();
       document
         .querySelector(".back-button")
         .addEventListener("click", function () {
