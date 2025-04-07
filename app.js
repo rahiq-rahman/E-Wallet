@@ -1,9 +1,24 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const session = require('express-session');
 const authRoutes = require('./routes/auth');
 
 const app = express();
+
+// CORS configuration
+const corsOptions = {
+    origin: 'http://localhost:63342', //  frontend origin. use '*' for allowing any origin
+    credentials: true, // Allow credentials (cookies, sessions)
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+};
+
+app.use(cors(corsOptions));
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     next();
+// });
 
 // Middleware
 app.use(express.json());

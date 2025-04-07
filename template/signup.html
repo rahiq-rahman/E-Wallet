@@ -1,110 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-Wallet Sign Up</title>
-    <link rel="stylesheet" href="css/signup.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="logo">
-        <div class="wallet-icon">💼</div>
-        <h1>E-Wallet</h1>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Wallet Sign Up</title>
+  <link rel="stylesheet" href="css/signup.css" />
+</head>
+<body>
+<div class="container">
+  <div class="logo">
+    <div class="wallet-icon">💼</div>
+    <h1>E-Wallet</h1>
+  </div>
 
-      <div id="error-message" class="alert"></div>
+  <div id="error-message" class="alert"></div>
 
-      <form id="signup-form">
-        <div class="input-group">
-          <label for="username" class="required">Username</label>
-          <input type="text" id="username" name="username" required />
-        </div>
-
-        <div class="input-group">
-          <label for="email" class="required">Email Address</label>
-          <input type="email" id="email" name="email" required />
-        </div>
-
-        <div class="input-group">
-          <label for="password" class="required">Password</label>
-          <input type="password" id="password" name="password" required />
-        </div>
-
-        <div class="input-group">
-          <label for="confirm-password" class="required"
-            >Confirm Password</label
-          >
-          <input
-            type="password"
-            id="confirm-password"
-            name="confirm-password"
-            required
-          />
-        </div>
-
-        <div class="input-group">
-          <label for="phone_no">Phone Number</label>
-          <input type="tel" id="phone_no" name="phone_no" />
-        </div>
-
-        <div class="input-group">
-          <label for="nid">National ID</label>
-          <input type="text" id="nid" name="nid" />
-        </div>
-
-        <button type="submit" class="signup-btn">Create Account</button>
-      </form>
-
-      <div class="login-link">
-        Already have an account? <a href="login.html">Login</a>
-      </div>
+  <form id="signup-form">
+    <div class="input-group">
+      <label for="username" class="required">Username</label>
+      <input type="text" id="username" name="username" required />
     </div>
 
-    <script>
-      document
-        .getElementById("signup-form")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
+    <div class="input-group">
+      <label for="email" class="required">Email Address</label>
+      <input type="email" id="email" name="email" required />
+    </div>
 
-          const username = document.getElementById("username").value;
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
-          const confirmPassword =
-            document.getElementById("confirm-password").value;
-          const phoneNo = document.getElementById("phone_no").value;
-          const nid = document.getElementById("nid").value;
+    <div class="input-group">
+      <label for="password" class="required">Password</label>
+      <input type="password" id="password" name="password" required />
+    </div>
 
-          // Validation
-          const errorMessage = document.getElementById("error-message");
+    <div class="input-group">
+      <label for="confirm-password" class="required">Confirm Password</label>
+      <input type="password" id="confirm-password" name="confirm-password" required />
+    </div>
 
-          if (!username || !email || !password || !confirmPassword) {
-            errorMessage.textContent = "Please fill in all required fields.";
-            errorMessage.style.display = "block";
-            return;
-          }
+    <div class="input-group">
+      <label for="phone_no" class="required">Phone Number</label>
+      <input type="tel" id="phone_no" name="phone_no" required />
+    </div>
 
-          if (password !== confirmPassword) {
-            errorMessage.textContent = "Passwords do not match.";
-            errorMessage.style.display = "block";
-            return;
-          }
+    <div class="input-group">
+      <label for="nid" class="required">National ID</label>
+      <input type="text" id="nid" name="nid" required />
+    </div>
 
-          const userData = {
-            user_id: "user_" + Date.now(),
-            username: username,
-            password: password,
-            phone_no: phoneNo,
-            nid: nid,
-            email: email,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          };
+    <button type="submit" class="signup-btn">Create Account</button>
+  </form>
 
-          console.log("User data:", userData);
+  <div class="login-link">
+    Already have an account? <a href="login.html">Login</a>
+  </div>
+</div>
 
-          window.location.href = "login.html";
-        });
-    </script>
-  </body>
+<script src="./scripts/signup.js"></script>
+</body>
 </html>
