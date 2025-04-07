@@ -8,8 +8,9 @@ const app = express();
 
 // CORS configuration
 const corsOptions = {
-    origin: 'http://localhost:63342', //  frontend origin. use '*' for allowing any origin
-    credentials: true, // Allow credentials (cookies, sessions)
+    origin: function (origin, callback) {
+        callback(null, origin); // Reflect the origin back
+      },    credentials: true, // Allow credentials (cookies, sessions)
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 };
