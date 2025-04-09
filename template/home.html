@@ -11,7 +11,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/commonstyle.css" />
     <style>
       /* Additional styles for clickable service items */
       .service-item {
@@ -277,9 +277,9 @@
     <div style="background: linear-gradient(180deg, #111726 0%, #0a0e17 100%)">
       <div class="bg-element bg-element-1"></div>
       <div class="container">
-        <button class="back-button">
+        <!-- <button class="back-button">
           <i class="fas fa-arrow-left"></i> Back
-        </button>
+        </button> -->
         <div class="wave"></div>
         <div class="section-title">
           <span>My Cards</span>
@@ -629,11 +629,11 @@
         console.log(`Navigating to ${service} service page`);
       }
 
-      document
-        .querySelector(".back-button")
-        .addEventListener("click", function () {
-          window.history.back();
-        });
+      // document
+      //   .querySelector(".back-button")
+      //   .addEventListener("click", function () {
+      //     window.history.back();
+      //   });
       document
         .querySelector(".profile-icon")
         .addEventListener("click", function () {
