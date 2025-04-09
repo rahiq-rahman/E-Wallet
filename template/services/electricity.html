@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Electricity Bill Payment | PayEase</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../css/commonstyle.css">
     <style>
         :root {
             --primary-color: #4A90E2;
@@ -16,90 +17,14 @@
             --grey-color: #9B9B9B;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(180deg, #111726 0%, #0a0e17 100%);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header Styles */
-        header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        
         .logo i {
             margin-right: 10px;
         }
         
-        .user-actions {
-            display: flex;
-            align-items: center;
+        .page-title{
+            margin: 24px 0;
         }
-        
-        .user-actions .balance {
-            background-color: var(--light-color);
-            padding: 8px 12px;
-            border-radius: 20px;
-            margin-right: 15px;
-            font-weight: 500;
-        }
-        
-        .user-actions .profile {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        
-        .user-actions .profile img {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        
-        /* Main Content Styles */
-        .main-content {
-            padding: 30px 0;
-        }
-        
-        .page-title {
-            margin-bottom: 25px;
-            color: var(--dark-color);
-            display: flex;
-            align-items: center;
-        }
-        
+
         .page-title i {
             font-size: 32px;
             margin-right: 15px;
@@ -109,44 +34,9 @@
             border-radius: 10px;
         }
         
-        /* Service Form Styles */
-        .service-form {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--dark-color);
-        }
-        
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
         
         .btn {
-            background-color: var(--primary-color);
+            background-color: #4A90E2;
             color: white;
             border: none;
             padding: 12px 20px;
@@ -160,140 +50,10 @@
             background-color: #3a7bc8;
         }
         
-        /* Payment History */
-        .payment-history {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 25px;
-        }
-        
-        .section-title {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: var(--dark-color);
-        }
-        
-        .history-list {
-            list-style: none;
-        }
-        
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .history-item:last-child {
-            border-bottom: none;
-        }
-        
-        .transaction-details {
-            display: flex;
-            align-items: center;
-        }
-        
-        .transaction-icon {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(74, 144, 226, 0.1);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-        }
-        
-        .transaction-icon i {
-            color: var(--primary-color);
-            font-size: 18px;
-        }
-        
-        .transaction-info h4 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        
-        .transaction-info p {
-            font-size: 14px;
-            color: var(--grey-color);
-        }
-        
-        .transaction-amount {
-            font-weight: 500;
-        }
-        
-        /* Footer Styles */
-        footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 40px 0 20px;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-        
-        .footer-section {
-            flex: 1;
-            min-width: 200px;
-            margin-bottom: 20px;
-            padding-right: 20px;
-        }
-        
-        .footer-section h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-        
-        .footer-section ul {
-            list-style: none;
-        }
-        
-        .footer-section ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-section ul li a {
-            color: #ddd;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-section ul li a:hover {
-            color: var(--primary-color);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #444;
-            font-size: 14px;
-            color: #ddd;
-        }
-        
         /* Responsive Styles */
         @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            
             .logo {
                 margin-bottom: 15px;
-            }
-            
-            .user-actions {
-                margin-top: 15px;
-            }
-            
-            .footer-section {
-                flex: 0 0 100%;
-                padding-right: 0;
             }
         }
     </style>
@@ -306,7 +66,11 @@
         </div>
       </nav>
 
-    <div class="container main-content">
+    <div class="main-content"  style="background: linear-gradient(180deg, #111726 0%, #0a0e17 100%);">
+        <div class="container">
+            <button class="back-button" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
         <h1 class="page-title">
             <i class="fas fa-lightbulb"></i>
             Electricity Bill Payment
@@ -336,10 +100,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="payment-method">Payment Method</label>
+                    <label for="payment-method">Payment</label>
                     <select id="payment-method" name="payment-method" required>
-                        <option value="">Select Payment Method</option>
-                        <option value="wallet">Wallet Balance</option>
+                        <option value="">Select Card</option>
                         <option value="card">Credit/Debit Card</option>
                         <option value="bank">Bank Transfer</option>
                     </select>
@@ -348,100 +111,25 @@
                 <button type="submit" class="btn">Pay Now</button>
             </form>
         </div>
-
-        <div class="payment-history">
-            <h2 class="section-title">Recent Payments</h2>
-            <ul class="history-list">
-                <li class="history-item">
-                    <div class="transaction-details">
-                        <div class="transaction-icon">
-                            <i class="fas fa-lightbulb"></i>
-                        </div>
-                        <div class="transaction-info">
-                            <h4>National Power Company</h4>
-                            <p>March 15, 2025</p>
-                        </div>
-                    </div>
-                    <div class="transaction-amount">$78.35</div>
-                </li>
-                <li class="history-item">
-                    <div class="transaction-details">
-                        <div class="transaction-icon">
-                            <i class="fas fa-lightbulb"></i>
-                        </div>
-                        <div class="transaction-info">
-                            <h4>National Power Company</h4>
-                            <p>February 16, 2025</p>
-                        </div>
-                    </div>
-                    <div class="transaction-amount">$82.50</div>
-                </li>
-                <li class="history-item">
-                    <div class="transaction-details">
-                        <div class="transaction-icon">
-                            <i class="fas fa-lightbulb"></i>
-                        </div>
-                        <div class="transaction-info">
-                            <h4>National Power Company</h4>
-                            <p>January 15, 2025</p>
-                        </div>
-                    </div>
-                    <div class="transaction-amount">$75.20</div>
-                </li>
-            </ul>
-        </div>
     </div>
-
-    <footer>
-        <div class="container footer-content">
-            <div class="footer-section">
-                <h3>About PayEase</h3>
-                <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Our Team</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Services</h3>
-                <ul>
-                    <li><a href="electricity.html">Electricity</a></li>
-                    <li><a href="internet.html">Internet</a></li>
-                    <li><a href="mobile.html">Mobile</a></li>
-                    <li><a href="gas.html">Gas</a></li>
-                    <li><a href="water.html">Water</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Support</h3>
-                <ul>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Community</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Legal</h3>
-                <ul>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Security</a></li>
-                    <li><a href="#">Compliance</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="copyright">
-            &copy; 2025 PayEase. All rights reserved.
-        </div>
-    </footer>
+    </div>
 
     <script>
         document.getElementById('electricity-payment-form').addEventListener('submit', function(event) {
             event.preventDefault();
             alert('Payment successful! A confirmation will be sent to your email.');
             // In a real application, you would submit the form data to a server here
+        });
+    </script>
+    <script>
+        // Navigation functions
+        function goBack() {
+            window.location.href = '../home.html';
+        }
+                document
+        .querySelector(".profile-icon")
+        .addEventListener("click", function () {
+            window.location.href = "../profile.html";
         });
     </script>
 </body>
