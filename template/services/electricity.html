@@ -56,6 +56,81 @@
                 margin-bottom: 15px;
             }
         }
+        .hidden {
+        display: none;
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .section {
+        background-color: #1a2235;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #e0e0e0;
+        display: flex;
+        align-items: center;
+      }
+
+      .section-title i {
+        margin-right: 8px;
+        color: #4f8eff;
+      }
+
+      .success-message {
+        text-align: center;
+        padding: 30px 0;
+      }
+
+      .success-icon {
+        font-size: 50px;
+        color: #10b981;
+        margin-bottom: 15px;
+      }
+
+      .success-text {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+
+      .transaction-id {
+        background-color: #141c2e;
+        padding: 10px 15px;
+        border-radius: 6px;
+        font-family: monospace;
+        font-size: 16px;
+        margin: 15px 0;
+        display: inline-block;
+      } 
+      .btn {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-align: center;
+      }
     </style>
 </head>
 <body>
@@ -108,8 +183,25 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn">Pay Now</button>
+                <button type="submit" class="btn" onclick="confirmPayment()">Pay Now</button>
             </form>
+        </div>
+        <!-- Payment Success Section -->
+        <div id="successSection" class="section hidden">
+          <div class="success-message">
+            <div class="success-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="success-text">Payment Successful!</div>
+            <p>Your internet bill has been paid successfully.</p>
+            <div class="transaction-id" id="transactionId">TXN123456789</div>
+          </div>
+  
+          <div class="btn-group" style="justify-content: center">
+            <button class="btn btn-primary" onclick="goToHome()">
+              Back to Home
+            </button>
+          </div>
         </div>
     </div>
     </div>
@@ -126,11 +218,33 @@
         function goBack() {
             window.location.href = '../home.html';
         }
+        function goToHome() {
+            window.location.href = "../home.html";
+        }
                 document
         .querySelector(".profile-icon")
         .addEventListener("click", function () {
             window.location.href = "../profile.html";
         });
+    </script>
+    <script>
+              // Confirm payment
+      function confirmPayment() {
+        // Hide bill section
+        document.querySelector(".service-form").classList.add("hidden");
+
+        // Generate random transaction ID
+        const txnId =
+          "TXN" +
+          Math.floor(Math.random() * 1000000000)
+            .toString()
+            .padStart(9, "0");
+        document.getElementById("transactionId").textContent = txnId;
+
+        // Show success section
+        document.getElementById("successSection").classList.remove("hidden");
+        document.getElementById("successSection").classList.add("fade-in");
+      }
     </script>
 </body>
 </html>
