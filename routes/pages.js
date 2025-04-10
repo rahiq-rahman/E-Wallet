@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const {isAuthenticated} = require("../middleware/authMiddleware");
+const { findById } = require('../models/userModel');
+
 
 const router = express.Router();
 
@@ -41,8 +43,25 @@ router.get('/home', isAuthenticated, (req, res) => {
 });
 
 // Route for profile page (protected)
-router.get('/profile', isAuthenticated, (req, res) => {
-    res.sendFile(path.join(__dirname, '../template', 'profile.html'));
+router.get('/profile', isAuthenticated, async (req, res) => {
+    try {
+        const user = await findById(req.session.userId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        res.render('profile', {
+            userId: user.user_id,
+            username: user.username,
+            email: user.email,
+            phone_no: user.phone_no,
+            nid: user.nid,
+            created_at: user.created_at,
+            updated_at: user.updated_at
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
 });
 
 // Routes for service pages (protected)

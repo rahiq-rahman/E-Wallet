@@ -30,6 +30,10 @@ app.use(session({
     cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours
 }));
 
+// Set up EJS as the template engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'template'));
+
 // Serve static files from the template folder
 app.use(express.static(path.join(__dirname, 'public')));
 
