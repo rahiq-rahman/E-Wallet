@@ -4,6 +4,7 @@ const cors = require('cors');
 const session = require('express-session');
 const authRoutes = require('./routes/auth');
 const pageRoutes = require('./routes/pages');
+const cardRoutes = require('./routes/card'); // Add card routes
 const path = require('path');
 
 
@@ -40,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 app.use('/auth', authRoutes);
 app.use('/', pageRoutes);
+app.use('/card', cardRoutes); // Mount card routes
 
 // Global error handler
 app.use((err, req, res, next) => {
