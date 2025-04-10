@@ -85,8 +85,9 @@ const logout = (req, res) => {
             console.error(err);
             return res.status(500).json({ message: 'Server error' });
         }
-       res.status(200).json({ message: 'Logout successful' });
-        // return res.redirect('/login');
+       // Clear the session cokkie
+        res.clearCookie('connect.sid');
+        res.redirect('/login');
     });
 };
 
