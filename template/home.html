@@ -11,7 +11,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/commonstyle.css" />
+    <link rel="stylesheet" href="/css/commonstyle.css" />
     <style>
       /* Additional styles for clickable service items */
       .service-item {
@@ -374,7 +374,7 @@
         </div>
         <div class="services-grid">
           <div class="service-item" onclick="navigateToService('electricity')">
-            <a href="services/electricity.html">
+            <a href="/electricity">
               <div class="service-icon electricity">
                 <i class="fas fa-lightbulb"></i>
               </div>
@@ -382,7 +382,7 @@
             </a>
           </div>
           <div class="service-item" onclick="navigateToService('internet')">
-            <a href="services/internet.html">
+            <a href="/internet">
               <div class="service-icon internet">
                 <i class="fas fa-wifi"></i>
               </div>
@@ -390,7 +390,7 @@
             </a>
           </div>
           <div class="service-item" onclick="navigateToService('mobile')">
-            <a href="services/mobile.html">
+            <a href="/mobile">
               <div class="service-icon mobile">
                 <i class="fas fa-mobile-alt"></i>
               </div>
@@ -398,7 +398,7 @@
             </a>
           </div>
           <div class="service-item" onclick="navigateToService('gas')">
-            <a href="services/gas.html">
+            <a href="/gas">
               <div class="service-icon gas">
                 <i class="fas fa-fire"></i>
               </div>
@@ -409,7 +409,7 @@
             class="service-item"
             onclick="navigateToService('money-transfer')"
           >
-            <a href="services/money-transfer.html">
+            <a href="/money-transfer">
               <div class="service-icon money">
                 <i class="fas fa-money-bill-alt"></i>
               </div>
@@ -417,7 +417,7 @@
             </a>
           </div>
           <div class="service-item" onclick="navigateToService('subscription')">
-            <a href="services/subscription.html">
+            <a href="subscription">
               <div class="service-icon subscription">
                 <i class="fas fa-sync-alt"></i>
               </div>
@@ -425,7 +425,7 @@
             </a>
           </div>
           <div class="service-item" onclick="navigateToService('shopping')">
-            <a href="services/shopping.html">
+            <a href="/shopping">
               <div class="service-icon shopping">
                 <i class="fas fa-shopping-cart"></i>
               </div>
@@ -433,7 +433,7 @@
             </a>
           </div>
           <div class="service-item" onclick="navigateToService('donate')">
-            <a href="services/donate.html">
+            <a href="/donate">
               <div class="service-icon donate">
                 <i class="fas fa-hand-holding-heart"></i>
               </div>
@@ -441,7 +441,7 @@
             </a>
           </div>
           <div class="service-item" onclick="navigateToService('merchant')">
-            <a href="services/merchant.html">
+            <a href="/merchant">
               <div class="service-icon merchant">
                 <i class="fas fa-store"></i>
               </div>
@@ -449,7 +449,7 @@
             </a>
           </div>
           <div class="service-item" onclick="navigateToService('water')">
-            <a href="services/water.html">
+            <a href="/water">
               <div class="service-icon water">
                 <i class="fas fa-tint"></i>
               </div>
@@ -637,7 +637,7 @@
       document
         .querySelector(".profile-icon")
         .addEventListener("click", function () {
-          window.location.href = "profile.html";
+          window.location.href = "/profile";
         });
       function openCardModal() {
         document.getElementById("addCardModal").classList.add("active");
