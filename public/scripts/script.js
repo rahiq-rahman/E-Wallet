@@ -145,7 +145,6 @@ function initializeInteractions() {
     // Add scroll animations
     initScrollAnimations();
 }
-
 function initCardCarousel() {
     const cardsContainer = document.querySelector('.cards-container');
     const paginationDots = document.querySelectorAll('.dot');
@@ -186,14 +185,8 @@ function initCardCarousel() {
             updateActiveCard(index);
         });
     });
-    
-    // Auto rotate cards every 5 seconds
-    setInterval(() => {
-        activeIndex = (activeIndex + 1) % paginationDots.length;
-        updateActiveCard(activeIndex);
-    }, 5000);
-    
-    // Add touch swipe functionality
+
+    // Optional: Add touch swipe functionality
     let startX, endX;
     cardsContainer.addEventListener('touchstart', e => {
         startX = e.touches[0].clientX;
@@ -202,12 +195,9 @@ function initCardCarousel() {
     cardsContainer.addEventListener('touchend', e => {
         endX = e.changedTouches[0].clientX;
         
-        // If swiped left and not at the last card
         if (startX > endX + 50 && activeIndex < paginationDots.length - 1) {
             updateActiveCard(activeIndex + 1);
         }
-        
-        // If swiped right and not at the first card
         if (startX < endX - 50 && activeIndex > 0) {
             updateActiveCard(activeIndex - 1);
         }
@@ -474,70 +464,6 @@ function createConfetti(count) {
     document.head.appendChild(style);
 }
 
-function initScrollAnimations() {
-    // Add scroll reveal effect to elements
-    const elementsToAnimate = [
-        '.info-box', 
-        '.service-item', 
-        '.transaction-item',
-        '.form-section'
-    ];
-    
-    // Create intersection observer
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
-    
-    // Observe all elements
-    elementsToAnimate.forEach(selector => {
-        document.querySelectorAll(selector).forEach(element => {
-            // Reset animation classes first
-            element.classList.remove('fadeInUp', 'fadeInScale', 'slideInRight');
-            element.style.opacity = '0';
-            
-            // Add revealed class for custom animation
-            element.classList.add('to-reveal');
-            
-            observer.observe(element);
-        });
-    });
-    
-    // Add necessary CSS
-    const style = document.createElement('style');
-    style.textContent = `
-        .to-reveal {
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .info-box.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .service-item.revealed {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .transaction-item.revealed {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .form-section.revealed {
-            opacity: 1;
-        }
-    `;
-    document.head.appendChild(style);
-}
 
 // Add dynamic wave effect to the header
 function addWaveEffect() {
@@ -568,34 +494,6 @@ function addWaveEffect() {
 // Initialize additional effects
 addWaveEffect();
 
-// Add tilt effect to cards and service items
-function initTiltEffect() {
-    const tiltElements = document.querySelectorAll('.card, .service-item, .info-box');
-    
-    tiltElements.forEach(element => {
-        element.addEventListener('mousemove', (e) => {
-            const rect = element.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 20;
-            const rotateY = (centerX - x) / 20;
-            
-            element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        });
-        
-        element.addEventListener('mouseleave', () => {
-            element.style.transform = '';
-            element.style.transition = 'transform 0.5s ease';
-        });
-    });
-}
-
-// Initialize tilt effect
-initTiltEffect();
 
 // Add parallax effect for background elements
 function initParallaxEffect() {
