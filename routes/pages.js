@@ -105,6 +105,10 @@ router.get('/mobile', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, '../template/services', 'mobile.html'));
 });
 
+router.get('/subscription', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, '../template/services', 'subscription.html'));
+});
+
 // Catch-all route
 // router.get('*', (req, res) => {
 //     res.redirect('/');
