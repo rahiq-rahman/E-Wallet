@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Subscription Bill Payment</title>
+    <title>Merchant Bill Payment</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -152,22 +152,21 @@
           <i class="fas fa-arrow-left"></i> Back
         </button>
         <h1 class="page-title">
-          <i class="fas fa-sync-alt"></i>
-          Subscription Bill Payment
+          <i class="fas fa-store"></i>
+          Merchant Bill Payment
         </h1>
 
         <div class="service-form">
           <form onsubmit="return validateForm()">
             <div class="form-group">
-              <label for="provider">Subscription Provider</label>
-              <select id="provider" name="provider" required>
-                <option value="">Select Provider</option>
-                <option value="provider1">Netflix</option>
-                <option value="provider2">Amazon Prime</option>
-                <option value="provider3">Spotify</option>
-                <option value="provider4">YouTube Premium</option>
-                <option value="provider5">Hoichoi</option>
-              </select>
+              <label for="account-number">Phone Number</label>
+              <input
+                type="text"
+                id="account-number"
+                name="account-number"
+                placeholder="Enter merchant phone number"
+                required
+              />
             </div>
 
             <div class="form-group">
@@ -178,7 +177,7 @@
                 name="amount"
                 min="1"
                 step="0.01"
-                placeholder="Enter payment amount"
+                placeholder="Enter recharge amount"
                 required
               />
             </div>
@@ -193,7 +192,7 @@
               <i class="fas fa-check-circle"></i>
             </div>
             <div class="success-text">Payment Successful!</div>
-            <p>Your Subscription bill has been paid successfully.</p>
+            <p>Your merchant bill has been paid successfully.</p>
             <div class="transaction-id" id="transactionId">TXN123456789</div>
           </div>
 
@@ -208,7 +207,7 @@
 
     <script>
       document
-        .getElementById("Subscription-payment-form")
+        .getElementById("merchant-payment-form")
         .addEventListener("submit", function (event) {
           event.preventDefault();
           alert(
@@ -233,13 +232,6 @@
     </script>
     <script>
       function validateForm() {
-        const provider = document.getElementById("provider").value;
-
-        if (provider === "") {
-          alert("Please select an Subscription provider.");
-          return false;
-        }
-
         // If everything is valid, confirm payment
         confirmPayment();
         return false; // prevent actual form submission (optional, for demo)

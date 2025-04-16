@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Subscription Bill Payment</title>
+    <title>Donate Payment</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -152,21 +152,21 @@
           <i class="fas fa-arrow-left"></i> Back
         </button>
         <h1 class="page-title">
-          <i class="fas fa-sync-alt"></i>
-          Subscription Bill Payment
+          <i class="fas fa-donate"></i>
+          Donation
         </h1>
 
         <div class="service-form">
           <form onsubmit="return validateForm()">
             <div class="form-group">
-              <label for="provider">Subscription Provider</label>
+              <label for="provider">Donate</label>
               <select id="provider" name="provider" required>
-                <option value="">Select Provider</option>
-                <option value="provider1">Netflix</option>
-                <option value="provider2">Amazon Prime</option>
-                <option value="provider3">Spotify</option>
-                <option value="provider4">YouTube Premium</option>
-                <option value="provider5">Hoichoi</option>
+                <option value="">Select Organization</option>
+                <option value="provider1">As Sunnah foundation</option>
+                <option value="provider2">BRAC</option>
+                <option value="provider3">ActionAid Bangladesh</option>
+                <option value="provider4">JAAGO Foundation</option>
+                <option value="provider5">Shakti Foundation</option>
               </select>
             </div>
 
@@ -186,14 +186,14 @@
             <button type="submit" class="btn">Pay Now</button>
           </form>
         </div>
-        <!-- Payment Success Section -->
+        <!-- Donation Success Section -->
         <div id="successSection" class="section hidden">
           <div class="success-message">
             <div class="success-icon">
               <i class="fas fa-check-circle"></i>
             </div>
-            <div class="success-text">Payment Successful!</div>
-            <p>Your Subscription bill has been paid successfully.</p>
+            <div class="success-text">Donation Successful!</div>
+            <p>Your Donation has been made successfully.</p>
             <div class="transaction-id" id="transactionId">TXN123456789</div>
           </div>
 
@@ -208,12 +208,9 @@
 
     <script>
       document
-        .getElementById("Subscription-payment-form")
+        .getElementById("Donate-payment-form")
         .addEventListener("submit", function (event) {
           event.preventDefault();
-          alert(
-            "Payment successful! A confirmation will be sent to your email."
-          );
           // In a real application, you would submit the form data to a server here
         });
     </script>
@@ -236,7 +233,7 @@
         const provider = document.getElementById("provider").value;
 
         if (provider === "") {
-          alert("Please select an Subscription provider.");
+          alert("Please select an organization.");
           return false;
         }
 
