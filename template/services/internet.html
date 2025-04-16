@@ -374,44 +374,47 @@
         </div>
 
         <div class="provider-grid">
-          <div class="provider-item" onclick="selectProvider(this, 'xfinity')">
+          <div class="provider-item" onclick="selectProvider(this, 'link3')">
             <div class="provider-icon">
               <i class="fas fa-broadcast-tower"></i>
             </div>
-            <div class="provider-name">Xfinity</div>
+            <div class="provider-name">Link3</div>
           </div>
-          <div class="provider-item" onclick="selectProvider(this, 'verizon')">
+          <div class="provider-item" onclick="selectProvider(this, 'amberIT')">
             <div class="provider-icon">
               <i class="fas fa-signal"></i>
             </div>
-            <div class="provider-name">Verizon</div>
+            <div class="provider-name">AmberIT</div>
           </div>
-          <div class="provider-item" onclick="selectProvider(this, 'att')">
+          <div class="provider-item" onclick="selectProvider(this, 'carnival')">
             <div class="provider-icon">
               <i class="fas fa-globe"></i>
             </div>
-            <div class="provider-name">AT&T</div>
-          </div>
-          <div class="provider-item" onclick="selectProvider(this, 'spectrum')">
-            <div class="provider-icon">
-              <i class="fas fa-satellite-dish"></i>
-            </div>
-            <div class="provider-name">Spectrum</div>
-          </div>
-          <div class="provider-item" onclick="selectProvider(this, 'cox')">
-            <div class="provider-icon">
-              <i class="fas fa-router"></i>
-            </div>
-            <div class="provider-name">Cox</div>
+            <div class="provider-name">Carnival</div>
           </div>
           <div
             class="provider-item"
-            onclick="selectProvider(this, 'centurylink')"
+            onclick="selectProvider(this, 'samonline')"
+          >
+            <div class="provider-icon">
+              <i class="fas fa-satellite-dish"></i>
+            </div>
+            <div class="provider-name">SamOnline</div>
+          </div>
+          <div class="provider-item" onclick="selectProvider(this, 'ks')">
+            <div class="provider-icon">
+              <i class="fas fa-route"></i>
+            </div>
+            <div class="provider-name">KS Network</div>
+          </div>
+          <div
+            class="provider-item"
+            onclick="selectProvider(this, 'dotinternet')"
           >
             <div class="provider-icon">
               <i class="fas fa-network-wired"></i>
             </div>
-            <div class="provider-name">CenturyLink</div>
+            <div class="provider-name">Dot Internet</div>
           </div>
         </div>
 
@@ -448,6 +451,16 @@
           />
         </div>
 
+        <div class="form-group">
+          <label for="billAmount">Bill Amount</label>
+          <input
+            type="number"
+            id="billAmount"
+            class="form-control"
+            placeholder="Enter bill amount"
+          />
+        </div>
+
         <div class="btn-group">
           <button class="btn btn-outline" onclick="goBackToProvider()">
             Back
@@ -480,28 +493,18 @@
         </div>
 
         <div class="bill-detail">
-          <div class="bill-label">Billing Period:</div>
-          <div class="bill-value">April 1 - April 30, 2025</div>
-        </div>
-
-        <div class="bill-detail">
-          <div class="bill-label">Service Plan:</div>
-          <div class="bill-value">Gigabit Internet</div>
-        </div>
-
-        <div class="bill-detail">
           <div class="bill-label">Bill Amount:</div>
-          <div class="bill-value">$79.99</div>
+          <div id="billAmountDisplay" class="bill-value">BDT 0.00</div>
         </div>
 
         <div class="bill-detail">
           <div class="bill-label">Service Fee:</div>
-          <div class="bill-value">$2.50</div>
+          <div class="bill-value">BDT 2.50</div>
         </div>
 
         <div class="bill-detail total-row">
           <div class="bill-label">Total Amount:</div>
-          <div class="bill-value">$82.49</div>
+          <div class="bill-value">BDT 82.49</div>
         </div>
 
         <div class="btn-group">
@@ -538,11 +541,11 @@
 
       // Navigation functions
       function goBack() {
-        window.location.href = "../home.html";
+        window.location.href = "../home";
       }
 
       function goToHome() {
-        window.location.href = "../home.html";
+        window.location.href = "../home";
       }
 
       // Provider selection
@@ -584,15 +587,19 @@
       function fetchBillDetails() {
         const accountName = document.getElementById("accountName").value;
         const referenceId = document.getElementById("referenceId").value;
+        const billAmount = document.getElementById("billAmount").value;
 
-        if (!accountName || !referenceId) {
-          alert("Please enter account name and reference ID");
+        if (!accountName || !referenceId || !billAmount) {
+          alert("Please enter account name, reference ID, and bill amount");
           return;
         }
 
         // Set bill details (in a real app, this would come from an API)
         document.getElementById("billName").textContent = accountName;
         document.getElementById("billAccountNumber").textContent = referenceId;
+        document.getElementById(
+          "billAmountDisplay"
+        ).textContent = `BDT ${billAmount}`;
         document.getElementById("billProvider").textContent =
           getProviderName(selectedProvider);
 
@@ -605,12 +612,12 @@
       // Get provider name from provider code
       function getProviderName(providerCode) {
         const providers = {
-          xfinity: "Xfinity",
-          verizon: "Verizon",
-          att: "AT&T",
-          spectrum: "Spectrum",
-          cox: "Cox",
-          centurylink: "CenturyLink",
+          link3: "Link3",
+          amberIT: "AmberIT",
+          carnival: "Carnival",
+          samonline: "SamOnline",
+          ks: "KS Network",
+          dotinternet: "Dot Internet",
         };
 
         return providers[providerCode] || providerCode;
@@ -635,14 +642,14 @@
       }
     </script>
     <script>
-        // Navigation functions
-        function goBack() {
-            window.location.href = '../home.html';
-        }
-              document
+      // Navigation functions
+      function goBack() {
+        window.location.href = "../home";
+      }
+      document
         .querySelector(".profile-icon")
         .addEventListener("click", function () {
-          window.location.href = "../profile.html";
+          window.location.href = "../profile";
         });
     </script>
   </body>

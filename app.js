@@ -3,6 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const authRoutes = require('./routes/auth');
+const pageRoutes = require('./routes/pages');
+const cardRoutes = require('./routes/card'); // Add card routes
+const path = require('path');
+
 
 const app = express();
 
@@ -16,10 +20,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     next();
-// });
+
 
 // Middleware
 app.use(express.json());
@@ -30,8 +31,17 @@ app.use(session({
     cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours
 }));
 
+// Set up EJS as the template engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'template'));
+
+// Serve static files from the template folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Routes
 app.use('/auth', authRoutes);
+app.use('/', pageRoutes);
+app.use('/card', cardRoutes); // Mount card routes
 
 // Global error handler
 app.use((err, req, res, next) => {

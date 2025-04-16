@@ -47,7 +47,7 @@ document.getElementById("signup-form").addEventListener("submit", async function
             errorMessage.style.color = "green";
             errorMessage.style.display = "block";
             setTimeout(() => {
-                window.location.href = "login.html";
+                window.location.href = "/home";
             }, 1000);
         } else {
             errorMessage.textContent = result.message || "Signup failed.";

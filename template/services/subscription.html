@@ -3,13 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gas Bill Payment</title>
+    <title>Subscription Bill Payment</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
     <link rel="stylesheet" href="/css/commonstyle.css" />
     <style>
+      :root {
+        --primary-color: #4a90e2;
+        --secondary-color: #f5a623;
+        --success-color: #7ed321;
+        --danger-color: #d0021b;
+        --dark-color: #333333;
+        --light-color: #f7f7f7;
+        --grey-color: #9b9b9b;
+      }
+
+      .logo i {
+        margin-right: 10px;
+      }
+
       .page-title {
         margin: 24px 0;
       }
@@ -17,8 +31,8 @@
       .page-title i {
         font-size: 32px;
         margin-right: 15px;
-        color: #d0021b;
-        background-color: rgba(208, 2, 27, 0.1);
+        color: #f5a623;
+        background-color: rgba(245, 166, 35, 0.1);
         padding: 10px;
         border-radius: 10px;
       }
@@ -38,12 +52,6 @@
         background-color: #3a7bc8;
       }
 
-      /* Responsive Styles */
-      @media (max-width: 768px) {
-        .logo {
-          margin-bottom: 15px;
-        }
-      }
       /* Responsive Styles */
       @media (max-width: 768px) {
         .logo {
@@ -144,32 +152,22 @@
           <i class="fas fa-arrow-left"></i> Back
         </button>
         <h1 class="page-title">
-          <i class="fas fa-fire"></i>
-          Gas Bill Payment
+          <i class="fas fa-sync-alt"></i>
+          Subscription Bill Payment
         </h1>
 
         <div class="service-form">
-          <form id="gas-payment-form">
+          <form onsubmit="return validateForm()">
             <div class="form-group">
-              <label for="provider">Gas Provider</label>
+              <label for="provider">Subscription Provider</label>
               <select id="provider" name="provider" required>
                 <option value="">Select Provider</option>
-                <option value="provider1">Titas Gas</option>
-                <option value="provider2">Sundarban Gas</option>
-                <option value="provider3">Bakhrabad Gas</option>
-                <option value="provider4">Karnapuli Gas</option>
+                <option value="provider1">Netflix</option>
+                <option value="provider2">Amazon Prime</option>
+                <option value="provider3">Spotify</option>
+                <option value="provider4">YouTube Premium</option>
+                <option value="provider5">Hoichoi</option>
               </select>
-            </div>
-
-            <div class="form-group">
-              <label for="account-number">Meter No.</label>
-              <input
-                type="text"
-                id="account-number"
-                name="account-number"
-                placeholder="Enter your meter number"
-                required
-              />
             </div>
 
             <div class="form-group">
@@ -195,7 +193,7 @@
               <i class="fas fa-check-circle"></i>
             </div>
             <div class="success-text">Payment Successful!</div>
-            <p>Your gas bill has been paid successfully.</p>
+            <p>Your Subscription bill has been paid successfully.</p>
             <div class="transaction-id" id="transactionId">TXN123456789</div>
           </div>
 
@@ -208,6 +206,17 @@
       </div>
     </div>
 
+    <script>
+      document
+        .getElementById("Subscription-payment-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          alert(
+            "Payment successful! A confirmation will be sent to your email."
+          );
+          // In a real application, you would submit the form data to a server here
+        });
+    </script>
     <script>
       // Navigation functions
       function goBack() {
@@ -223,13 +232,19 @@
         });
     </script>
     <script>
-      document
-        .getElementById("gas-payment-form")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          // Call confirmPayment to show success message and generate transaction ID
-          confirmPayment();
-        });
+      function validateForm() {
+        const provider = document.getElementById("provider").value;
+
+        if (provider === "") {
+          alert("Please select an Subscription provider.");
+          return false;
+        }
+
+        // If everything is valid, confirm payment
+        confirmPayment();
+        return false; // prevent actual form submission (optional, for demo)
+      }
+
       function confirmPayment() {
         // Hide bill section
         document.querySelector(".service-form").classList.add("hidden");

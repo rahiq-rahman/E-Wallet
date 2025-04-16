@@ -52,28 +52,6 @@ function animateElements() {
         }, 50);
     }
     
-    // Animate cards with 3D effect
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
-            card.style.transition = 'transform 0.5s ease';
-        });
-    });
     
     // Animate background elements
     animateBackgroundElements();
@@ -133,8 +111,6 @@ function initializeInteractions() {
     // Initialize card carousel
     initCardCarousel();
     
-    // Initialize service items
-    initServiceItems();
     
     // Initialize payment selection
     initPaymentSelection();
@@ -145,126 +121,86 @@ function initializeInteractions() {
     // Add scroll animations
     initScrollAnimations();
 }
-
 function initCardCarousel() {
     const cardsContainer = document.querySelector('.cards-container');
     const paginationDots = document.querySelectorAll('.dot');
+    const cards = cardsContainer?.querySelectorAll('.card') || [];
     let activeIndex = 0;
-    
-    if (!cardsContainer || !paginationDots.length) return;
-    
+
+    if (!cardsContainer || !paginationDots.length || !cards.length) return;
+
     // Update active card and dot
     function updateActiveCard(index) {
-        const cards = cardsContainer.querySelectorAll('.card');
-        
-        // Remove active class from all cards and dots
+        // Remove active from all cards and dots
         cards.forEach(card => card.classList.remove('active'));
         paginationDots.forEach(dot => dot.classList.remove('active'));
-        
-        // Add active class to current card and dot
-        if (cards[index]) cards[index].classList.add('active');
-        if (paginationDots[index]) paginationDots[index].classList.add('active');
-        
-        // Scroll to active card
-        if (cards[index]) {
-            const cardWidth = cards[index].offsetWidth + 15; // Width + gap
+
+        // Add active to selected ones
+        const selectedCard = cards[index];
+        if (selectedCard) {
+            selectedCard.classList.add('active');
+            paginationDots[index]?.classList.add('active');
+
+            // Center the selected card
+            const containerWidth = cardsContainer.offsetWidth;
+            const cardOffsetLeft = selectedCard.offsetLeft;
+            const cardWidth = selectedCard.offsetWidth;
+            const scrollPosition = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+
             cardsContainer.scrollTo({
-                left: index * cardWidth,
+                left: scrollPosition,
                 behavior: 'smooth'
             });
+
+            activeIndex = index;
         }
+
+        // Remove card on close icon click
+        cardsContainer.querySelectorAll('.card-badge').forEach((badge, index) => {
+            badge.addEventListener('click', () => {
+            const card = badge.closest('.card');
+            card.style.transform = 'scale(0.7)';
+            card.style.opacity = '0';
+            setTimeout(() => {
+                card.remove();
+                paginationDots[index]?.remove(); // remove corresponding dot
+                initCardCarousel(); // re-sync carousel
+            }, 300);
+            });
+        });
         
-        activeIndex = index;
     }
-    
+
     // Initialize first card as active
     updateActiveCard(0);
-    
-    // Add click event to pagination dots
+
+    // Click event for dots
     paginationDots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            updateActiveCard(index);
-        });
+        dot.addEventListener('click', () => updateActiveCard(index));
     });
-    
-    // Auto rotate cards every 5 seconds
-    setInterval(() => {
-        activeIndex = (activeIndex + 1) % paginationDots.length;
-        updateActiveCard(activeIndex);
-    }, 5000);
-    
-    // Add touch swipe functionality
-    let startX, endX;
+
+    // ✅ Click event for cards
+    cards.forEach((card, index) => {
+        card.addEventListener('click', () => updateActiveCard(index));
+    });
+
+    // Touch swipe
+    let startX = 0, endX = 0;
     cardsContainer.addEventListener('touchstart', e => {
         startX = e.touches[0].clientX;
     });
-    
+
     cardsContainer.addEventListener('touchend', e => {
         endX = e.changedTouches[0].clientX;
-        
-        // If swiped left and not at the last card
-        if (startX > endX + 50 && activeIndex < paginationDots.length - 1) {
+
+        if (startX > endX + 50 && activeIndex < cards.length - 1) {
             updateActiveCard(activeIndex + 1);
-        }
-        
-        // If swiped right and not at the first card
-        if (startX < endX - 50 && activeIndex > 0) {
+        } else if (startX < endX - 50 && activeIndex > 0) {
             updateActiveCard(activeIndex - 1);
         }
     });
 }
 
-function initServiceItems() {
-    const serviceItems = document.querySelectorAll('.service-item');
-    
-    serviceItems.forEach(item => {
-        // Add click effect
-        item.addEventListener('click', () => {
-            // Add ripple effect
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            item.appendChild(ripple);
-            
-            // Position ripple from center of click
-            const rect = item.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            
-            ripple.style.width = ripple.style.height = `${size}px`;
-            ripple.style.top = '50%';
-            ripple.style.left = '50%';
-            ripple.style.transform = 'translate(-50%, -50%)';
-            
-            // Remove ripple after animation
-            setTimeout(() => {
-                ripple.remove();
-                
-                // Show notification
-                showNotification('Service Selected', 'You selected ' + item.querySelector('.service-name').textContent, 'success');
-            }, 500);
-        });
-    });
-    
-    // Add ripple style
-    const style = document.createElement('style');
-    style.textContent = `
-        .ripple {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: scale(0);
-            animation: rippleEffect 0.5s linear;
-            pointer-events: none;
-        }
-        
-        @keyframes rippleEffect {
-            to {
-                transform: translate(-50%, -50%) scale(2);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-}
 
 function initPaymentSelection() {
     // Provider selection
@@ -317,61 +253,11 @@ function initPaymentSelection() {
             // Simulate processing
             setTimeout(() => {
                 showLoading(false);
-                showNotification('Payment Successful', 'Your payment has been processed successfully!', 'success');
             }, 2000);
         });
     }
 }
 
-function showNotification(title, message, type = 'success') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    
-    notification.innerHTML = `
-        <div class="notification-icon ${type}">
-            <i class="fas fa-${type === 'success' ? 'check' : 'exclamation-triangle'}"></i>
-        </div>
-        <div class="notification-content">
-            <div class="notification-title">${title}</div>
-            <div class="notification-message">${message}</div>
-        </div>
-        <div class="notification-close">
-            <i class="fas fa-times"></i>
-        </div>
-    `;
-    
-    // Add to DOM
-    document.body.appendChild(notification);
-    
-    // Show notification with delay
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 100);
-    
-    // Add close functionality
-    const closeBtn = notification.querySelector('.notification-close');
-    closeBtn.addEventListener('click', () => {
-        notification.classList.remove('show');
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 500);
-    });
-    
-    // Auto-close after 5 seconds
-    setTimeout(() => {
-        if (document.body.contains(notification)) {
-            notification.classList.remove('show');
-            
-            setTimeout(() => {
-                if (document.body.contains(notification)) {
-                    notification.remove();
-                }
-            }, 500);
-        }
-    }, 5000);
-}
 
 function initDarkModeToggle() {
     const darkModeToggle = document.querySelector('.dark-mode-toggle');
@@ -474,70 +360,6 @@ function createConfetti(count) {
     document.head.appendChild(style);
 }
 
-function initScrollAnimations() {
-    // Add scroll reveal effect to elements
-    const elementsToAnimate = [
-        '.info-box', 
-        '.service-item', 
-        '.transaction-item',
-        '.form-section'
-    ];
-    
-    // Create intersection observer
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
-    
-    // Observe all elements
-    elementsToAnimate.forEach(selector => {
-        document.querySelectorAll(selector).forEach(element => {
-            // Reset animation classes first
-            element.classList.remove('fadeInUp', 'fadeInScale', 'slideInRight');
-            element.style.opacity = '0';
-            
-            // Add revealed class for custom animation
-            element.classList.add('to-reveal');
-            
-            observer.observe(element);
-        });
-    });
-    
-    // Add necessary CSS
-    const style = document.createElement('style');
-    style.textContent = `
-        .to-reveal {
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .info-box.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .service-item.revealed {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .transaction-item.revealed {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .form-section.revealed {
-            opacity: 1;
-        }
-    `;
-    document.head.appendChild(style);
-}
 
 // Add dynamic wave effect to the header
 function addWaveEffect() {
@@ -568,34 +390,6 @@ function addWaveEffect() {
 // Initialize additional effects
 addWaveEffect();
 
-// Add tilt effect to cards and service items
-function initTiltEffect() {
-    const tiltElements = document.querySelectorAll('.card, .service-item, .info-box');
-    
-    tiltElements.forEach(element => {
-        element.addEventListener('mousemove', (e) => {
-            const rect = element.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 20;
-            const rotateY = (centerX - x) / 20;
-            
-            element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        });
-        
-        element.addEventListener('mouseleave', () => {
-            element.style.transform = '';
-            element.style.transition = 'transform 0.5s ease';
-        });
-    });
-}
-
-// Initialize tilt effect
-initTiltEffect();
 
 // Add parallax effect for background elements
 function initParallaxEffect() {
@@ -616,3 +410,16 @@ function initParallaxEffect() {
 
 // Initialize parallax effect
 initParallaxEffect();
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+      card.addEventListener("click", () => {
+        // Remove active from all
+        cards.forEach(c => c.classList.remove("active"));
+        // Add active to clicked one
+        card.classList.add("active");
+      });
+    });
+  });

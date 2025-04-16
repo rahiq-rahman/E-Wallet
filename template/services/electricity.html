@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Electricity Bill Payment | PayEase</title>
+    <title>Electricity Bill Payment</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
-    <link rel="stylesheet" href="../css/commonstyle.css" />
+    <link rel="stylesheet" href="/css/commonstyle.css" />
     <style>
       :root {
         --primary-color: #4a90e2;
@@ -123,6 +123,16 @@
         margin: 15px 0;
         display: inline-block;
       }
+      .btn {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -147,25 +157,26 @@
         </h1>
 
         <div class="service-form">
-          <form id="electricity-payment-form">
+          <form onsubmit="return validateForm()">
             <div class="form-group">
               <label for="provider">Electricity Provider</label>
               <select id="provider" name="provider" required>
                 <option value="">Select Provider</option>
-                <option value="provider1">National Power Company</option>
-                <option value="provider2">City Electric Service</option>
-                <option value="provider3">Metro Energy</option>
-                <option value="provider4">Regional Power Grid</option>
+                <option value="provider1">Palli Bidyut</option>
+                <option value="provider2">DESCO</option>
+                <option value="provider3">NESCO</option>
+                <option value="provider4">DPDC</option>
+                <option value="provider5">Westzone</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label for="account-number">Account Number / Customer ID</label>
+              <label for="account-number">Meter No.</label>
               <input
                 type="text"
                 id="account-number"
                 name="account-number"
-                placeholder="Enter your account number"
+                placeholder="Enter your meter number"
                 required
               />
             </div>
@@ -183,18 +194,7 @@
               />
             </div>
 
-            <div class="form-group">
-              <label for="payment-method">Payment</label>
-              <select id="payment-method" name="payment-method" required>
-                <option value="">Select Card</option>
-                <option value="card">Credit/Debit Card</option>
-                <option value="bank">Bank Transfer</option>
-              </select>
-            </div>
-
-            <button type="submit" class="btn" onclick="confirmPayment()">
-              Pay Now
-            </button>
+            <button type="submit" class="btn">Pay Now</button>
           </form>
         </div>
         <!-- Payment Success Section -->
@@ -218,21 +218,44 @@
     </div>
 
     <script>
+      document
+        .getElementById("electricity-payment-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          alert(
+            "Payment successful! A confirmation will be sent to your email."
+          );
+          // In a real application, you would submit the form data to a server here
+        });
+    </script>
+    <script>
       // Navigation functions
       function goBack() {
-        window.location.href = "../home.html";
+        window.location.href = "../home";
       }
       function goToHome() {
-        window.location.href = "../home.html";
+        window.location.href = "../home";
       }
       document
         .querySelector(".profile-icon")
         .addEventListener("click", function () {
-          window.location.href = "../profile.html";
+          window.location.href = "../profile";
         });
     </script>
     <script>
-      // Confirm payment
+      function validateForm() {
+        const provider = document.getElementById("provider").value;
+
+        if (provider === "") {
+          alert("Please select an electricity provider.");
+          return false;
+        }
+
+        // If everything is valid, confirm payment
+        confirmPayment();
+        return false; // prevent actual form submission (optional, for demo)
+      }
+
       function confirmPayment() {
         // Hide bill section
         document.querySelector(".service-form").classList.add("hidden");
