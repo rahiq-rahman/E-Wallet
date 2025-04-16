@@ -354,9 +354,9 @@
       <% if (cards && cards.length > 0) { %>
       <% cards.forEach((card, index) => { %>
       <div class="card card-<%= (index % 3) + 1 %>">
-        <div class="card-badge">
+        <button class="card-badge" style="border: 1px solid white; color: white;">
           <i class="fas fa-close"></i>
-        </div>
+        </button>
         <img src="/img/chip.jpg" alt="Card Chip" class="card-chip"/>
         <div class="card-number">**** **** **** <%= card.card_number.slice(-4) %></div>
         <div class="card-details">
@@ -510,6 +510,66 @@
             </div>
           </div>
           <div class="transaction-amount">BDT -120.00</div>
+        </div>
+        <div class="transaction-item">
+          <div class="transaction-details">
+            <div class="transaction-icon">
+              <i class="fas fa-fire"></i>
+            </div>
+            <div class="transaction-info">
+              <div class="transaction-name">Gas Bill</div>
+              <div class="transaction-date">3 Days Ago, 5:30 PM</div>
+            </div>
+          </div>
+          <div class="transaction-amount">BDT -85.00</div>
+        </div>
+        <div class="transaction-item">
+          <div class="transaction-details">
+            <div class="transaction-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="transaction-info">
+              <div class="transaction-name">Shopping</div>
+              <div class="transaction-date">Today, 10:30 AM</div>
+            </div>
+          </div>
+          <div class="transaction-amount">BDT -50.00</div>
+        </div>
+        <div class="transaction-item">
+          <div class="transaction-details">
+            <div class="transaction-icon">
+              <i class="fas fa-money-bill-alt"></i>
+            </div>
+            <div class="transaction-info">
+              <div class="transaction-name">Salary</div>
+              <div class="transaction-date">Yesterday, 2:00 PM</div>
+            </div>
+          </div>
+          <div class="transaction-amount">BDT +1,500.00</div>
+        </div>
+        <div class="transaction-item">
+          <div class="transaction-details">
+            <div class="transaction-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <div class="transaction-info">
+              <div class="transaction-name">Electricity Bill</div>
+              <div class="transaction-date">2 Days Ago, 7:00 PM</div>
+            </div>
+          </div>
+          <div class="transaction-amount">BDT -120.00</div>
+        </div>
+        <div class="transaction-item">
+          <div class="transaction-details">
+            <div class="transaction-icon">
+              <i class="fas fa-fire"></i>
+            </div>
+            <div class="transaction-info">
+              <div class="transaction-name">Gas Bill</div>
+              <div class="transaction-date">3 Days Ago, 5:30 PM</div>
+            </div>
+          </div>
+          <div class="transaction-amount">BDT -85.00</div>
         </div>
         <div class="transaction-item">
           <div class="transaction-details">
