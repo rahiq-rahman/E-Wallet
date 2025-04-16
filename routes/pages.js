@@ -101,6 +101,10 @@ router.get('/water', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, '../template/services', 'water.html'));
 });
 
+router.get('/mobile', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, '../template/services', 'water.html'));
+});
+
 // Catch-all route
 // router.get('*', (req, res) => {
 //     res.redirect('/');
