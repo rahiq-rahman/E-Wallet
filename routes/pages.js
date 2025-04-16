@@ -102,7 +102,7 @@ router.get('/water', isAuthenticated, (req, res) => {
 });
 
 router.get('/mobile', isAuthenticated, (req, res) => {
-    res.sendFile(path.join(__dirname, '../template/services', 'water.html'));
+    res.sendFile(path.join(__dirname, '../template/services', 'mobile.html'));
 });
 
 // Catch-all route
