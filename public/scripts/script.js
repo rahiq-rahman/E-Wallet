@@ -52,28 +52,6 @@ function animateElements() {
         }, 50);
     }
     
-    // Animate cards with 3D effect
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
-            card.style.transition = 'transform 0.5s ease';
-        });
-    });
     
     // Animate background elements
     animateBackgroundElements();
@@ -148,61 +126,68 @@ function initializeInteractions() {
 function initCardCarousel() {
     const cardsContainer = document.querySelector('.cards-container');
     const paginationDots = document.querySelectorAll('.dot');
+    const cards = cardsContainer?.querySelectorAll('.card') || [];
     let activeIndex = 0;
-    
-    if (!cardsContainer || !paginationDots.length) return;
-    
+
+    if (!cardsContainer || !paginationDots.length || !cards.length) return;
+
     // Update active card and dot
     function updateActiveCard(index) {
-        const cards = cardsContainer.querySelectorAll('.card');
-        
-        // Remove active class from all cards and dots
+        // Remove active from all cards and dots
         cards.forEach(card => card.classList.remove('active'));
         paginationDots.forEach(dot => dot.classList.remove('active'));
-        
-        // Add active class to current card and dot
-        if (cards[index]) cards[index].classList.add('active');
-        if (paginationDots[index]) paginationDots[index].classList.add('active');
-        
-        // Scroll to active card
-        if (cards[index]) {
-            const cardWidth = cards[index].offsetWidth + 15; // Width + gap
+
+        // Add active to selected ones
+        const selectedCard = cards[index];
+        if (selectedCard) {
+            selectedCard.classList.add('active');
+            paginationDots[index]?.classList.add('active');
+
+            // Center the selected card
+            const containerWidth = cardsContainer.offsetWidth;
+            const cardOffsetLeft = selectedCard.offsetLeft;
+            const cardWidth = selectedCard.offsetWidth;
+            const scrollPosition = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+
             cardsContainer.scrollTo({
-                left: index * cardWidth,
+                left: scrollPosition,
                 behavior: 'smooth'
             });
+
+            activeIndex = index;
         }
-        
-        activeIndex = index;
     }
-    
+
     // Initialize first card as active
     updateActiveCard(0);
-    
-    // Add click event to pagination dots
+
+    // Click event for dots
     paginationDots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            updateActiveCard(index);
-        });
+        dot.addEventListener('click', () => updateActiveCard(index));
     });
 
-    // Optional: Add touch swipe functionality
-    let startX, endX;
+    // ✅ Click event for cards
+    cards.forEach((card, index) => {
+        card.addEventListener('click', () => updateActiveCard(index));
+    });
+
+    // Touch swipe
+    let startX = 0, endX = 0;
     cardsContainer.addEventListener('touchstart', e => {
         startX = e.touches[0].clientX;
     });
-    
+
     cardsContainer.addEventListener('touchend', e => {
         endX = e.changedTouches[0].clientX;
-        
-        if (startX > endX + 50 && activeIndex < paginationDots.length - 1) {
+
+        if (startX > endX + 50 && activeIndex < cards.length - 1) {
             updateActiveCard(activeIndex + 1);
-        }
-        if (startX < endX - 50 && activeIndex > 0) {
+        } else if (startX < endX - 50 && activeIndex > 0) {
             updateActiveCard(activeIndex - 1);
         }
     });
 }
+
 
 function initServiceItems() {
     const serviceItems = document.querySelectorAll('.service-item');
@@ -514,3 +499,29 @@ function initParallaxEffect() {
 
 // Initialize parallax effect
 initParallaxEffect();
+// Remove card on close icon click
+cardsContainer.querySelectorAll('.card-badge').forEach((badge, index) => {
+    badge.addEventListener('click', () => {
+      const card = badge.closest('.card');
+      card.style.transform = 'scale(0.7)';
+      card.style.opacity = '0';
+      setTimeout(() => {
+        card.remove();
+        paginationDots[index]?.remove(); // remove corresponding dot
+        initCardCarousel(); // re-sync carousel
+      }, 300);
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+      card.addEventListener("click", () => {
+        // Remove active from all
+        cards.forEach(c => c.classList.remove("active"));
+        // Add active to clicked one
+        card.classList.add("active");
+      });
+    });
+  });
