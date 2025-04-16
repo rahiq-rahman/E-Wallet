@@ -8,12 +8,6 @@
     <link rel="stylesheet" href="/css/profile.css" />
 </head>
 <body>
-<nav class="nav">
-    <span class="nav-title">User Profile</span>
-    <div class="profile-icon">
-        <i class="fas fa-user"></i>
-    </div>
-</nav>
 
 <div class="container">
     <div class="bg-element bg-element-1"></div>
@@ -44,21 +38,21 @@
             <div class="info-label">Username</div>
             <div class="info-value">
                 <%= username %>
-                <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
+                <button class="btn-edit"><i class="fas"></i></button>
             </div>
         </div>
         <div class="info-row">
             <div class="info-label">Password</div>
             <div class="info-value">
                 ••••••••••
-                <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
+                <button class="btn-edit"><i class="fas"></i></button>
             </div>
         </div>
         <div class="info-row">
             <div class="info-label">Phone Number</div>
             <div class="info-value">
                 <%= phone_no %>
-                <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
+                <button class="btn-edit"><i class="fas"></i></button>
             </div>
         </div>
         <div class="info-row">
@@ -74,23 +68,20 @@
             <div class="info-label">Email</div>
             <div class="info-value">
                 <%= email %>
-                <button class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
+                <button class="btn-edit"><i class="fas"></i></button>
             </div>
         </div>
     </div>
 
-    <div class="timestamps">
-        <p>Account created: <%= created_at.toLocaleString() %></p>
-        <p>Last updated: <%= updated_at.toLocaleString() %></p>
-    </div>
-
-    <button class="action-button btn-primary">
-        <i class="fas fa-save"></i> Save Changes
-    </button>
-
+    
     <button class="action-button btn-danger">
         <i class="fas fa-sign-out-alt"></i> Log Out
     </button>
+    <div class="timestamps" style="margin-bottom: 20px;">
+        <p>Account created: <%= created_at.toLocaleString() %></p>
+        <br>
+        <p>Last updated: <%= updated_at.toLocaleString() %></p>
+    </div>
 </div>
 
 <script>
