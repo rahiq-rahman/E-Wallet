@@ -109,6 +109,14 @@ router.get('/subscription', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, '../template/services', 'subscription.html'));
 });
 
+router.get('/donate', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, '../template/services', 'donate.html'));
+});
+
+router.get('/merchant', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, '../template/services', 'merchant.html'));
+});
+
 // Catch-all route
 // router.get('*', (req, res) => {
 //     res.redirect('/');
