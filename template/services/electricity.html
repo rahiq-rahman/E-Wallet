@@ -1,62 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electricity Bill Payment | PayEase</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="/css/commonstyle.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electricity Bill Payment</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/commonstyle.css" />
     <style>
-        :root {
-            --primary-color: #4A90E2;
-            --secondary-color: #F5A623;
-            --success-color: #7ED321;
-            --danger-color: #D0021B;
-            --dark-color: #333333;
-            --light-color: #F7F7F7;
-            --grey-color: #9B9B9B;
-        }
-        
-        .logo i {
-            margin-right: 10px;
-        }
-        
-        .page-title{
-            margin: 24px 0;
-        }
+      :root {
+        --primary-color: #4a90e2;
+        --secondary-color: #f5a623;
+        --success-color: #7ed321;
+        --danger-color: #d0021b;
+        --dark-color: #333333;
+        --light-color: #f7f7f7;
+        --grey-color: #9b9b9b;
+      }
 
-        .page-title i {
-            font-size: 32px;
-            margin-right: 15px;
-            color: #F5A623;
-            background-color: rgba(245, 166, 35, 0.1);
-            padding: 10px;
-            border-radius: 10px;
+      .logo i {
+        margin-right: 10px;
+      }
+
+      .page-title {
+        margin: 24px 0;
+      }
+
+      .page-title i {
+        font-size: 32px;
+        margin-right: 15px;
+        color: #f5a623;
+        background-color: rgba(245, 166, 35, 0.1);
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      .btn {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #3a7bc8;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        .logo {
+          margin-bottom: 15px;
         }
-        
-        
-        .btn {
-            background-color: #4A90E2;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .btn:hover {
-            background-color: #3a7bc8;
-        }
-        
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .logo {
-                margin-bottom: 15px;
-            }
-        }
-        .hidden {
+      }
+      .hidden {
         display: none;
       }
       .fade-in {
@@ -120,7 +122,7 @@
         font-size: 16px;
         margin: 15px 0;
         display: inline-block;
-      } 
+      }
       .btn {
         padding: 12px 20px;
         border-radius: 8px;
@@ -132,51 +134,68 @@
         text-align: center;
       }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="nav">
-        <span class="nav-title">E-Wallet</span>
-        <div class="profile-icon">
-          <i class="fas fa-user"></i>
-        </div>
-      </nav>
+      <span class="nav-title">E-Wallet</span>
+      <div class="profile-icon">
+        <i class="fas fa-user"></i>
+      </div>
+    </nav>
 
-    <div class="main-content"  style="background: linear-gradient(180deg, #111726 0%, #0a0e17 100%);">
-        <div class="container">
-            <button class="back-button" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i> Back
-            </button>
+    <div
+      class="main-content"
+      style="background: linear-gradient(180deg, #111726 0%, #0a0e17 100%)"
+    >
+      <div class="container">
+        <button class="back-button" onclick="goBack()">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
         <h1 class="page-title">
-            <i class="fas fa-lightbulb"></i>
-            Electricity Bill Payment
+          <i class="fas fa-lightbulb"></i>
+          Electricity Bill Payment
         </h1>
 
         <div class="service-form">
           <form onsubmit="return validateForm()">
             <div class="form-group">
-                <label for="provider">Electricity Provider</label>
-                <select id="provider" name="provider" required>
-                    <option value="">Select Provider</option>
-                    <option value="provider1">Palli Bidyut</option>
-                    <option value="provider2">DESCO</option>
-                    <option value="provider3">NESCO</option>
-                    <option value="provider4">DPDC</option>
-                    <option value="provider5">Westzone</option>
-                </select>
+              <label for="provider">Electricity Provider</label>
+              <select id="provider" name="provider" required>
+                <option value="">Select Provider</option>
+                <option value="provider1">Palli Bidyut</option>
+                <option value="provider2">DESCO</option>
+                <option value="provider3">NESCO</option>
+                <option value="provider4">DPDC</option>
+                <option value="provider5">Westzone</option>
+              </select>
             </div>
-        
+
             <div class="form-group">
-                <label for="account-number">Meter No.</label>
-                <input type="text" id="account-number" name="account-number" placeholder="Enter your meter number" required>
+              <label for="account-number">Meter No.</label>
+              <input
+                type="text"
+                id="account-number"
+                name="account-number"
+                placeholder="Enter your meter number"
+                required
+              />
             </div>
-        
+
             <div class="form-group">
-                <label for="amount">Amount</label>
-                <input type="number" id="amount" name="amount" min="1" step="0.01" placeholder="Enter payment amount" required>
+              <label for="amount">Amount</label>
+              <input
+                type="number"
+                id="amount"
+                name="amount"
+                min="1"
+                step="0.01"
+                placeholder="Enter payment amount"
+                required
+              />
             </div>
-        
+
             <button type="submit" class="btn">Pay Now</button>
-        </form>
+          </form>
         </div>
         <!-- Payment Success Section -->
         <div id="successSection" class="section hidden">
@@ -188,64 +207,71 @@
             <p>Your internet bill has been paid successfully.</p>
             <div class="transaction-id" id="transactionId">TXN123456789</div>
           </div>
-  
+
           <div class="btn-group" style="justify-content: center">
             <button class="btn btn-primary" onclick="goToHome()">
               Back to Home
             </button>
           </div>
         </div>
-    </div>
+      </div>
     </div>
 
     <script>
-        document.getElementById('electricity-payment-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            alert('Payment successful! A confirmation will be sent to your email.');
-            // In a real application, you would submit the form data to a server here
+      document
+        .getElementById("electricity-payment-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          alert(
+            "Payment successful! A confirmation will be sent to your email."
+          );
+          // In a real application, you would submit the form data to a server here
         });
     </script>
     <script>
-        // Navigation functions
-        function goBack() {
-            window.location.href = '../home';
-        }
-        function goToHome() {
-            window.location.href = "../home";
-        }
-                document
+      // Navigation functions
+      function goBack() {
+        window.location.href = "../home";
+      }
+      function goToHome() {
+        window.location.href = "../home";
+      }
+      document
         .querySelector(".profile-icon")
         .addEventListener("click", function () {
-            window.location.href = "../profile";
+          window.location.href = "../profile";
         });
     </script>
     <script>
-  function validateForm() {
-      const provider = document.getElementById("provider").value;
+      function validateForm() {
+        const provider = document.getElementById("provider").value;
 
-      if (provider === "") {
+        if (provider === "") {
           alert("Please select an electricity provider.");
           return false;
+        }
+
+        // If everything is valid, confirm payment
+        confirmPayment();
+        return false; // prevent actual form submission (optional, for demo)
       }
 
-      // If everything is valid, confirm payment
-      confirmPayment();
-      return false; // prevent actual form submission (optional, for demo)
-  }
+      function confirmPayment() {
+        // Hide bill section
+        document.querySelector(".service-form").classList.add("hidden");
 
-  function confirmPayment() {
-      // Hide bill section
-      document.querySelector(".service-form").classList.add("hidden");
+        // Generate random transaction ID
+        const txnId =
+          "TXN" +
+          Math.floor(Math.random() * 1000000000)
+            .toString()
+            .padStart(9, "0");
+        document.getElementById("transactionId").textContent = txnId;
 
-      // Generate random transaction ID
-      const txnId = "TXN" + Math.floor(Math.random() * 1000000000).toString().padStart(9, "0");
-      document.getElementById("transactionId").textContent = txnId;
-
-      // Show success section
-      document.getElementById("successSection").classList.remove("hidden");
-      document.getElementById("successSection").classList.add("fade-in");
-  }
-</script>
-      
-</body>
+        // Show success section
+        document.getElementById("successSection").classList.remove("hidden");
+        document.getElementById("successSection").classList.add("fade-in");
+      }
+    </script>
+  </body>
 </html>
