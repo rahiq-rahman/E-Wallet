@@ -111,8 +111,6 @@ function initializeInteractions() {
     // Initialize card carousel
     initCardCarousel();
     
-    // Initialize service items
-    initServiceItems();
     
     // Initialize payment selection
     initPaymentSelection();
@@ -156,6 +154,21 @@ function initCardCarousel() {
 
             activeIndex = index;
         }
+
+        // Remove card on close icon click
+        cardsContainer.querySelectorAll('.card-badge').forEach((badge, index) => {
+            badge.addEventListener('click', () => {
+            const card = badge.closest('.card');
+            card.style.transform = 'scale(0.7)';
+            card.style.opacity = '0';
+            setTimeout(() => {
+                card.remove();
+                paginationDots[index]?.remove(); // remove corresponding dot
+                initCardCarousel(); // re-sync carousel
+            }, 300);
+            });
+        });
+        
     }
 
     // Initialize first card as active
@@ -188,58 +201,6 @@ function initCardCarousel() {
     });
 }
 
-
-function initServiceItems() {
-    const serviceItems = document.querySelectorAll('.service-item');
-    
-    serviceItems.forEach(item => {
-        // Add click effect
-        item.addEventListener('click', () => {
-            // Add ripple effect
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            item.appendChild(ripple);
-            
-            // Position ripple from center of click
-            const rect = item.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            
-            ripple.style.width = ripple.style.height = `${size}px`;
-            ripple.style.top = '50%';
-            ripple.style.left = '50%';
-            ripple.style.transform = 'translate(-50%, -50%)';
-            
-            // Remove ripple after animation
-            setTimeout(() => {
-                ripple.remove();
-                
-                // Show notification
-                showNotification('Service Selected', 'You selected ' + item.querySelector('.service-name').textContent, 'success');
-            }, 500);
-        });
-    });
-    
-    // Add ripple style
-    const style = document.createElement('style');
-    style.textContent = `
-        .ripple {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: scale(0);
-            animation: rippleEffect 0.5s linear;
-            pointer-events: none;
-        }
-        
-        @keyframes rippleEffect {
-            to {
-                transform: translate(-50%, -50%) scale(2);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-}
 
 function initPaymentSelection() {
     // Provider selection
@@ -292,61 +253,11 @@ function initPaymentSelection() {
             // Simulate processing
             setTimeout(() => {
                 showLoading(false);
-                showNotification('Payment Successful', 'Your payment has been processed successfully!', 'success');
             }, 2000);
         });
     }
 }
 
-function showNotification(title, message, type = 'success') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    
-    notification.innerHTML = `
-        <div class="notification-icon ${type}">
-            <i class="fas fa-${type === 'success' ? 'check' : 'exclamation-triangle'}"></i>
-        </div>
-        <div class="notification-content">
-            <div class="notification-title">${title}</div>
-            <div class="notification-message">${message}</div>
-        </div>
-        <div class="notification-close">
-            <i class="fas fa-times"></i>
-        </div>
-    `;
-    
-    // Add to DOM
-    document.body.appendChild(notification);
-    
-    // Show notification with delay
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 100);
-    
-    // Add close functionality
-    const closeBtn = notification.querySelector('.notification-close');
-    closeBtn.addEventListener('click', () => {
-        notification.classList.remove('show');
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 500);
-    });
-    
-    // Auto-close after 5 seconds
-    setTimeout(() => {
-        if (document.body.contains(notification)) {
-            notification.classList.remove('show');
-            
-            setTimeout(() => {
-                if (document.body.contains(notification)) {
-                    notification.remove();
-                }
-            }, 500);
-        }
-    }, 5000);
-}
 
 function initDarkModeToggle() {
     const darkModeToggle = document.querySelector('.dark-mode-toggle');
@@ -499,19 +410,6 @@ function initParallaxEffect() {
 
 // Initialize parallax effect
 initParallaxEffect();
-// Remove card on close icon click
-cardsContainer.querySelectorAll('.card-badge').forEach((badge, index) => {
-    badge.addEventListener('click', () => {
-      const card = badge.closest('.card');
-      card.style.transform = 'scale(0.7)';
-      card.style.opacity = '0';
-      setTimeout(() => {
-        card.remove();
-        paginationDots[index]?.remove(); // remove corresponding dot
-        initCardCarousel(); // re-sync carousel
-      }, 300);
-    });
-  });
 
   document.addEventListener("DOMContentLoaded", () => {
     const cards = document.querySelectorAll(".card");
