@@ -31,4 +31,12 @@ const findCardById = async (cardId) => {
     return null;
 };
 
-module.exports = { createCard, findCardsByUserId, findCardById };
+const deleteCard = async (cardId, userId) => {
+    const [result] = await pool.query(
+        'DELETE FROM BANK_CARDS WHERE card_id = ? AND user_id = ?',
+        [cardId, userId]
+    );
+    return result.affectedRows;
+};
+
+module.exports = { createCard, findCardsByUserId, findCardById, deleteCard };

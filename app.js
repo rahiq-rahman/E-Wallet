@@ -6,6 +6,8 @@ const authRoutes = require('./routes/auth');
 const pageRoutes = require('./routes/pages');
 const cardRoutes = require('./routes/card'); // Add card routes
 const path = require('path');
+const paymentController = require('./controllers/paymentController');
+const transactionRoutes = require('./routes/transaction');
 
 
 const app = express();
@@ -42,6 +44,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', authRoutes);
 app.use('/', pageRoutes);
 app.use('/card', cardRoutes); // Mount card routes
+app.use('/transactions', transactionRoutes);
+
+// Routes
+app.post('/payment', async (req, res) => {
+    try {
+        await paymentController.processPayment(req, res);
+    } catch (error) {
+        console.error('Error processing payment:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 // Global error handler
 app.use((err, req, res, next) => {

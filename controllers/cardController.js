@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { createCard, findCardsByUserId } = require('../models/cardModel');
+const { createCard, findCardsByUserId, deleteCard } = require('../models/cardModel');
 
 const cardSchema = Joi.object({
     cardHolderName: Joi.string().min(3).max(100).required(),
@@ -7,6 +7,10 @@ const cardSchema = Joi.object({
     expiryDate: Joi.string().pattern(/^(0[1-9]|1[0-2])\/\d{2}$/).required(), // MM/YY format
     cvv: Joi.string().pattern(/^[0-9]{3,4}$/).required(),
     cardType: Joi.string().valid('visa', 'mastercard', 'amex').required()
+});
+
+const removeCardSchema = Joi.object({
+    cardId: Joi.number().integer().positive().required()
 });
 
 const addCard = async (req, res) => {
@@ -46,4 +50,25 @@ const getUserCards = async (req, res) => {
     }
 };
 
-module.exports = { addCard, getUserCards };
+const removeCard = async (req, res) => {
+    const { error } = removeCardSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ success: false, error: error.details[0].message });
+    }
+
+    const { cardId } = req.body;
+    const userId = req.session.userId;
+
+    try {
+        const affectedRows = await deleteCard(cardId, userId);
+        if (affectedRows === 0) {
+            return res.status(404).json({ success: false, error: 'Card not found or not authorized' });
+        }
+        res.json({ success: true, message: 'Card removed successfully' });
+    } catch (err) {
+        console.error('Error removing card:', err);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+};
+
+module.exports = { addCard, getUserCards, removeCard };

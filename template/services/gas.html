@@ -1,251 +1,611 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gas Bill Payment</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
-    <link rel="stylesheet" href="/css/commonstyle.css" />
-    <style>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gas Bill Payment</title>
+  <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          rel="stylesheet"
+  />
+<!--  <link rel="stylesheet" href="/css/commonstyle.css" />-->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    :root {
+      --primary-color: #4a90e2;
+      --secondary-color: #f5a623;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --dark-color: #1a2235;
+      --light-color: #f7f7f7;
+      --grey-color: #d1d5db;
+      --input-bg: #1f2937;
+      --border-color: #4b5563;
+    }
+
+    body {
+      background: linear-gradient(180deg, #111726 0%, #0a0e17 100%);
+      min-height: 100vh;
+      color: var(--light-color);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: var(--dark-color);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-title {
+      font-size: 20px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #58a5f8, #d16ba5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .profile-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #5b86e5, #36d1dc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: color 0.3s;
+    }
+
+    .back-button:hover {
+      color: #3a7bc8;
+    }
+
+    .back-button i {
+      margin-right: 6px;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      margin: 24px 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .page-title i {
+      font-size: 32px;
+      margin-right: 15px;
+      color: var(--secondary-color);
+      background-color: rgba(245, 166, 35, 0.2);
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .section {
+      background-color: var(--dark-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-3px);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--light-color);
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title i {
+      margin-right: 8px;
+      color: var(--primary-color);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--grey-color);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .form-control, select.form-control {
+      width: 100%;
+      padding: 12px 15px;
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--light-color);
+      font-size: 0.95rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+    .form-control:focus, select.form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+      outline: none;
+    }
+
+    .form-control.error {
+      border-color: var(--danger-color);
+      box-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
+    }
+
+    .error-message {
+      color: var(--danger-color);
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    select.form-control {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23d1d5db' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 16px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #3a7bc8;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--light-color);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .bill-detail {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .bill-detail:last-child {
+      border-bottom: none;
+    }
+
+    .bill-label {
+      color: var(--grey-color);
+      font-size: 0.9rem;
+    }
+
+    .bill-value {
+      font-weight: 600;
+      color: var(--light-color);
+      font-size: 0.9rem;
+    }
+
+    .total-row {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 2px solid var(--border-color);
+      font-size: 1rem;
+    }
+
+    .total-row .bill-value {
+      color: var(--primary-color);
+    }
+
+    .success-message {
+      text-align: center;
+      padding: 30px 0;
+    }
+
+    .success-icon {
+      font-size: 50px;
+      color: var(--success-color);
+      margin-bottom: 15px;
+    }
+
+    .success-text {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: var(--light-color);
+    }
+
+    .transaction-id {
+      background-color: var(--input-bg);
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 16px;
+      margin: 15px 0;
+      display: inline-block;
+      color: var(--light-color);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
       .page-title {
-        margin: 24px 0;
+        font-size: 1.2rem;
       }
 
-      .page-title i {
-        font-size: 32px;
-        margin-right: 15px;
-        color: #d0021b;
-        background-color: rgba(208, 2, 27, 0.1);
-        padding: 10px;
-        border-radius: 10px;
+      .btn-group {
+        flex-direction: column;
+        gap: 10px;
       }
 
       .btn {
-        background-color: #4a90e2;
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+        width: 100%;
       }
+    }
 
-      .btn:hover {
-        background-color: #3a7bc8;
-      }
+    /* Focus states for accessibility */
+    .form-control:focus, select.form-control:focus, .btn:focus {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+<nav class="nav" aria-label="Main navigation">
+  <span class="nav-title">E-Wallet</span>
+  <div class="profile-icon" role="button" aria-label="Go to profile" tabindex="0">
+    <i class="fas fa-user"></i>
+  </div>
+</nav>
+<div class="container">
+  <button class="back-button" onclick="goBack()" aria-label="Go back">
+    <i class="fas fa-arrow-left"></i> Back
+  </button>
 
-      /* Responsive Styles */
-      @media (max-width: 768px) {
-        .logo {
-          margin-bottom: 15px;
-        }
-      }
-      /* Responsive Styles */
-      @media (max-width: 768px) {
-        .logo {
-          margin-bottom: 15px;
-        }
-      }
-      .hidden {
-        display: none;
-      }
-      .fade-in {
-        animation: fadeIn 0.5s ease-out forwards;
-      }
+  <h1 class="page-title">
+    <i class="fas fa-fire"></i> Gas Bill Payment
+  </h1>
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .section {
-        background-color: #1a2235;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-      }
+  <!-- Account Information Section -->
+  <section id="accountSection" class="section" aria-labelledby="account-title">
+    <div class="section-title" id="account-title">
+      <i class="fas fa-user-circle"></i> Bill Information
+    </div>
 
-      .section-title {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 15px;
-        color: #e0e0e0;
-        display: flex;
-        align-items: center;
-      }
-
-      .section-title i {
-        margin-right: 8px;
-        color: #4f8eff;
-      }
-
-      .success-message {
-        text-align: center;
-        padding: 30px 0;
-      }
-
-      .success-icon {
-        font-size: 50px;
-        color: #10b981;
-        margin-bottom: 15px;
-      }
-
-      .success-text {
-        font-size: 20px;
-        margin-bottom: 15px;
-      }
-
-      .transaction-id {
-        background-color: #141c2e;
-        padding: 10px 15px;
-        border-radius: 6px;
-        font-family: monospace;
-        font-size: 16px;
-        margin: 15px 0;
-        display: inline-block;
-      }
-      .btn {
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: inline-block;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="nav">
-      <span class="nav-title">E-Wallet</span>
-      <div class="profile-icon">
-        <i class="fas fa-user"></i>
+    <form id="gasForm" onsubmit="return validateForm()">
+      <div class="form-group">
+        <label for="provider">Gas Provider</label>
+        <select id="provider" name="provider" class="form-control" required aria-describedby="providerError">
+          <option value="">Select Provider</option>
+          <option value="titas">Titas Gas</option>
+          <option value="sundarban">Sundarban Gas</option>
+          <option value="bakhrabad">Bakhrabad Gas</option>
+          <option value="karnapuli">Karnapuli Gas</option>
+        </select>
+        <div id="providerError" class="error-message">Please select a provider</div>
       </div>
-    </nav>
 
-    <div
-      class="main-content"
-      style="background: linear-gradient(180deg, #111726 0%, #0a0e17 100%)"
-    >
-      <div class="container">
-        <button class="back-button" onclick="goBack()">
-          <i class="fas fa-arrow-left"></i> Back
-        </button>
-        <h1 class="page-title">
-          <i class="fas fa-fire"></i>
-          Gas Bill Payment
-        </h1>
-
-        <div class="service-form">
-          <form id="gas-payment-form">
-            <div class="form-group">
-              <label for="provider">Gas Provider</label>
-              <select id="provider" name="provider" required>
-                <option value="">Select Provider</option>
-                <option value="provider1">Titas Gas</option>
-                <option value="provider2">Sundarban Gas</option>
-                <option value="provider3">Bakhrabad Gas</option>
-                <option value="provider4">Karnapuli Gas</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="account-number">Meter No.</label>
-              <input
+      <div class="form-group">
+        <label for="meterNumber">Meter Number</label>
+        <input
                 type="text"
-                id="account-number"
-                name="account-number"
-                placeholder="Enter your meter number"
+                id="meterNumber"
+                name="meterNumber"
+                class="form-control"
+                placeholder="Enter meter number"
                 required
-              />
-            </div>
+                pattern="[A-Za-z0-9]{6,12}"
+                aria-describedby="meterNumberError"
+        />
+        <div id="meterNumberError" class="error-message">Please enter a valid meter number (6-12 alphanumeric characters)</div>
+      </div>
 
-            <div class="form-group">
-              <label for="amount">Amount</label>
-              <input
+      <div class="form-group">
+        <label for="amount">Bill Amount (BDT)</label>
+        <input
                 type="number"
                 id="amount"
                 name="amount"
+                class="form-control"
+                placeholder="Enter bill amount"
                 min="1"
                 step="0.01"
-                placeholder="Enter payment amount"
                 required
-              />
-            </div>
-
-            <button type="submit" class="btn">Pay Now</button>
-          </form>
-        </div>
-        <!-- Payment Success Section -->
-        <div id="successSection" class="section hidden">
-          <div class="success-message">
-            <div class="success-icon">
-              <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="success-text">Payment Successful!</div>
-            <p>Your gas bill has been paid successfully.</p>
-            <div class="transaction-id" id="transactionId">TXN123456789</div>
-          </div>
-
-          <div class="btn-group" style="justify-content: center">
-            <button class="btn btn-primary" onclick="goToHome()">
-              Back to Home
-            </button>
-          </div>
-        </div>
+                aria-describedby="amountError"
+        />
+        <div id="amountError" class="error-message">Please enter a valid amount (minimum 1 BDT)</div>
       </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary">Check Details</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Bill Details Section -->
+  <section id="billSection" class="section hidden" aria-labelledby="bill-title">
+    <div class="section-title" id="bill-title">
+      <i class="fas fa-file-invoice-dollar"></i> Bill Details
     </div>
 
-    <script>
-      // Navigation functions
-      function goBack() {
-        window.location.href = "../home";
-      }
-      function goToHome() {
-        window.location.href = "../home";
-      }
-      document
-        .querySelector(".profile-icon")
-        .addEventListener("click", function () {
-          window.location.href = "../profile";
-        });
-    </script>
-    <script>
-      document
-        .getElementById("gas-payment-form")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          // Call confirmPayment to show success message and generate transaction ID
-          confirmPayment();
-        });
-      function confirmPayment() {
-        // Hide bill section
-        document.querySelector(".service-form").classList.add("hidden");
+    <div class="bill-detail">
+      <div class="bill-label">Meter Number:</div>
+      <div class="bill-value" id="billMeterNumber"></div>
+    </div>
 
-        // Generate random transaction ID
-        const txnId =
-          "TXN" +
-          Math.floor(Math.random() * 1000000000)
-            .toString()
-            .padStart(9, "0");
-        document.getElementById("transactionId").textContent = txnId;
+    <div class="bill-detail">
+      <div class="bill-label">Provider:</div>
+      <div class="bill-value" id="billProvider"></div>
+    </div>
 
-        // Show success section
-        document.getElementById("successSection").classList.remove("hidden");
-        document.getElementById("successSection").classList.add("fade-in");
+    <div class="bill-detail">
+      <div class="bill-label">Bill Amount:</div>
+      <div id="billAmountDisplay" class="bill-value"></div>
+    </div>
+
+    <div class="bill-detail">
+      <div class="bill-label">Service Fee:</div>
+      <div class="bill-value">BDT 2.50</div>
+    </div>
+
+    <div class="bill-detail total-row">
+      <div class="bill-label">Total Amount:</div>
+      <div class="bill-value" id="totalAmount"></div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-outline" onclick="goBackToAccount()">Back</button>
+      <button class="btn btn-primary" onclick="confirmPayment()">Confirm Payment</button>
+    </div>
+  </section>
+
+  <!-- Payment Success Section -->
+  <section id="successSection" class="section hidden" aria-labelledby="success-title">
+    <div class="success-message">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="success-text" id="success-title">Payment Successful!</div>
+      <p>Your gas bill has been paid successfully.</p>
+      <div class="transaction-id" id="transactionId"></div>
+    </div>
+
+    <div class="btn-group" style="justify-content: center">
+      <button class="btn btn-primary" onclick="goToHome()">Back to Home</button>
+    </div>
+  </section>
+</div>
+
+<script>
+  // Navigation functions
+  function goBack() {
+    sessionStorage.removeItem('selectedCardId');
+    window.location.href = '/home';
+  }
+
+  function goToHome() {
+    sessionStorage.removeItem('selectedCardId');
+    window.location.href = '/home';
+  }
+
+  document.querySelector('.profile-icon').addEventListener('click', () => {
+    window.location.href = '/profile';
+  });
+
+  document.querySelector('.profile-icon').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      window.location.href = '/profile';
+    }
+  });
+
+  // Go back to account section
+  function goBackToAccount() {
+    document.getElementById('billSection').classList.add('hidden');
+    document.getElementById('accountSection').classList.remove('hidden');
+  }
+
+  // Validate form inputs
+  function validateForm() {
+    const provider = document.getElementById('provider').value;
+    const meterNumber = document.getElementById('meterNumber').value.trim();
+    const amount = document.getElementById('amount').value;
+    const cardId = sessionStorage.getItem('selectedCardId');
+
+    let isValid = true;
+
+    // Reset error states
+    document.querySelectorAll('.form-control').forEach(input => {
+      input.classList.remove('error');
+      input.nextElementSibling.style.display = 'none';
+    });
+
+    if (!provider) {
+      document.getElementById('provider').classList.add('error');
+      document.getElementById('providerError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!meterNumber ) {
+    // || !/[A-Za-z0-9]{6,12}/.test(meterNumber)
+      document.getElementById('meterNumber').classList.add('error');
+      document.getElementById('meterNumberError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!amount || amount < 1) {
+      document.getElementById('amount').classList.add('error');
+      document.getElementById('amountError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!cardId) {
+      alert('Please select a payment card on the home page.');
+      return false;
+    }
+
+    if (isValid) {
+      fetchBillDetails();
+    }
+
+    return false; // Prevent form submission
+  }
+
+  // Fetch bill details (mock for now, replace with API if needed)
+  function fetchBillDetails() {
+    const provider = document.getElementById('provider').value;
+    const meterNumber = document.getElementById('meterNumber').value.trim();
+    const amount = parseFloat(document.getElementById('amount').value);
+
+    document.getElementById('billMeterNumber').textContent = meterNumber;
+    document.getElementById('billProvider').textContent = getProviderName(provider);
+    document.getElementById('billAmountDisplay').textContent = `BDT ${amount.toFixed(2)}`;
+    document.getElementById('totalAmount').textContent = `BDT ${(amount + 2.50).toFixed(2)}`;
+
+    document.getElementById('accountSection').classList.add('hidden');
+    document.getElementById('billSection').classList.remove('hidden');
+    document.getElementById('billSection').classList.add('fade-in');
+  }
+
+  // Get provider name from provider code
+  function getProviderName(providerCode) {
+    const providers = {
+      titas: 'Titas Gas',
+      sundarban: 'Sundarban Gas',
+      bakhrabad: 'Bakhrabad Gas',
+      karnapuli: 'Karnapuli Gas'
+    };
+    return providers[providerCode] || providerCode;
+  }
+
+  // Confirm payment
+  async function confirmPayment() {
+    const cardId = sessionStorage.getItem('selectedCardId');
+    if (!cardId) {
+      alert('Please select a payment card on the home page.');
+      return;
+    }
+
+    const provider = document.getElementById('provider').value;
+    const referenceId = document.getElementById('billMeterNumber').textContent;
+    const amount = parseFloat(document.getElementById('billAmountDisplay').textContent.replace('BDT ', '')) + 2.50;
+
+    try {
+      const response = await fetch('/payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          provider,
+          referenceId,
+          amount,
+          cardId,
+          service_type: 'gas'
+        })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        document.getElementById('billSection').classList.add('hidden');
+        document.getElementById('transactionId').textContent = result.transactionId;
+        document.getElementById('successSection').classList.remove('hidden');
+        document.getElementById('successSection').classList.add('fade-in');
+        sessionStorage.removeItem('selectedCardId');
+      } else {
+        alert(result.error || 'Payment failed');
       }
-    </script>
-  </body>
+    } catch (error) {
+      alert('Error processing payment: ' + error.message);
+    }
+  }
+</script>
+</body>
 </html>

@@ -1,656 +1,733 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Internet Bill Payment</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Internet Bill Payment</title>
+  <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          rel="stylesheet"
+  />
+<!--  <link rel="stylesheet" href="/css/commonstyle.css" />-->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    :root {
+      --primary-color: #4a90e2; /* Bright blue for primary actions */
+      --secondary-color: #f5a623; /* Orange for highlights */
+      --success-color: #10b981; /* Green for success */
+      --danger-color: #ef4444; /* Brighter red for errors (improved contrast) */
+      --dark-color: #1a2235; /* Dark background for sections */
+      --light-color: #f7f7f7; /* Light text/icons */
+      --grey-color: #d1d5db; /* Brighter grey for labels (improved contrast) */
+      --input-bg: #1f2937; /* Slightly lighter input background */
+      --border-color: #4b5563; /* Brighter border for inputs */
+    }
+
+    body {
+      background: linear-gradient(180deg, #111726 0%, #0a0e17 100%);
+      min-height: 100vh;
+      color: #ffffff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: var(--dark-color);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-title {
+      font-size: 20px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #58a5f8, #d16ba5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .profile-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #5b86e5, #36d1dc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: color 0.3s;
+    }
+
+    .back-button:hover {
+      color: #3a7bc8;
+    }
+
+    .back-button i {
+      margin-right: 6px;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      margin: 24px 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .page-title i {
+      font-size: 32px;
+      margin-right: 15px;
+      color: var(--secondary-color);
+      background-color: rgba(245, 166, 35, 0.2);
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .section {
+      background-color: var(--dark-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-3px);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--light-color);
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title i {
+      margin-right: 8px;
+      color: var(--primary-color);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--grey-color); /* Brighter grey for better contrast */
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      background-color: var(--input-bg); /* Lighter input background */
+      border: 1px solid var(--border-color); /* Brighter border */
+      border-radius: 8px;
+      color: var(--light-color);
+      font-size: 0.95rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+      outline: none;
+    }
+
+    .form-control.error {
+      border-color: var(--danger-color);
+      box-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
+    }
+
+    .error-message {
+      color: var(--danger-color);
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .provider-item {
+      background-color: var(--input-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .provider-item:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-3px);
+    }
+
+    .provider-item.selected {
+      border-color: #60a5fa; /* Brighter blue for selected state */
+      background-color: rgba(96, 165, 250, 0.2); /* More noticeable background */
+      box-shadow: 0 0 8px rgba(96, 165, 250, 0.3);
+    }
+
+    .provider-icon {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      color: #93c5fd; /* Lighter blue for better contrast */
+    }
+
+    .provider-name {
+      font-size: 0.85rem;
+      color: var(--light-color); /* Brighter text */
+      font-weight: 500;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #3a7bc8;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--light-color);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
       }
-
-      body {
-        background: linear-gradient(180deg, #111726 0%, #0a0e17 100%);
-        min-height: 100vh;
-        color: #ffffff;
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
+    }
 
+    .bill-detail {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .bill-detail:last-child {
+      border-bottom: none;
+    }
+
+    .bill-label {
+      color: var(--grey-color);
+      font-size: 0.9rem;
+    }
+
+    .bill-value {
+      font-weight: 600;
+      color: var(--light-color);
+      font-size: 0.9rem;
+    }
+
+    .total-row {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 2px solid var(--border-color);
+      font-size: 1rem;
+    }
+
+    .total-row .bill-value {
+      color: var(--primary-color);
+    }
+
+    .success-message {
+      text-align: center;
+      padding: 30px 0;
+    }
+
+    .success-icon {
+      font-size: 50px;
+      color: var(--success-color);
+      margin-bottom: 15px;
+    }
+
+    .success-text {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: var(--light-color);
+    }
+
+    .transaction-id {
+      background-color: var(--input-bg);
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 16px;
+      margin: 15px 0;
+      display: inline-block;
+      color: var(--light-color);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
       .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        position: relative;
-      }
-
-      .nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 20px;
-        background-color: #1a2235;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      }
-
-      .nav-title {
-        font-size: 20px;
-        font-weight: 600;
-      }
-
-      .profile-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background-color: #2a3446;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-      }
-
-      .back-button {
-        display: flex;
-        align-items: center;
-        background: none;
-        border: none;
-        color: #4f8eff;
-        font-size: 16px;
-        cursor: pointer;
-        margin-bottom: 20px;
-      }
-
-      .back-button i {
-        margin-right: 6px;
+        padding: 15px;
       }
 
       .page-title {
-        display: flex;
-        align-items: center;
-        margin-bottom: 25px;
-        font-size: 22px;
-        font-weight: 600;
-      }
-
-      .page-title i {
-        margin-right: 10px;
-        color: #4f8eff;
-        font-size: 24px;
-      }
-
-      .section {
-        background-color: #1a2235;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-      }
-
-      .section-title {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 15px;
-        color: #e0e0e0;
-        display: flex;
-        align-items: center;
-      }
-
-      .section-title i {
-        margin-right: 8px;
-        color: #4f8eff;
-      }
-
-      .form-group {
-        margin-bottom: 15px;
-      }
-
-      .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        color: #c0c0c0;
-      }
-
-      .form-control {
-        width: 100%;
-        padding: 12px 15px;
-        background-color: #141c2e;
-        border: 1px solid #2a3446;
-        border-radius: 8px;
-        color: #ffffff;
-        font-size: 15px;
-        transition: border-color 0.3s;
-      }
-
-      .form-control:focus {
-        border-color: #4f8eff;
-        outline: none;
+        font-size: 1.2rem;
       }
 
       .provider-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-        margin-top: 15px;
-      }
-
-      .provider-item {
-        background-color: #141c2e;
-        border: 2px solid #2a3446;
-        border-radius: 10px;
-        padding: 15px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        user-select: none;
-      }
-
-      .provider-item:hover {
-        border-color: #4f8eff;
-        transform: translateY(-3px);
-      }
-
-      .provider-item.selected {
-        border-color: #4f8eff;
-        background-color: rgba(79, 142, 255, 0.1);
-      }
-
-      .provider-icon {
-        font-size: 28px;
-        margin-bottom: 8px;
-        color: #4f8eff;
-      }
-
-      .provider-name {
-        font-size: 14px;
-        color: #e0e0e0;
-      }
-
-      .btn {
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: inline-block;
-        text-align: center;
-      }
-
-      .btn-primary {
-        background: linear-gradient(180deg, #4f8eff 0%, #2563eb 100%);
-        color: #ffffff;
-        border: none;
-      }
-
-      .btn-primary:hover {
-        background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
-      }
-
-      .btn-outline {
-        background-color: transparent;
-        color: #e0e0e0;
-        border: 1px solid #2a3446;
-      }
-
-      .btn-outline:hover {
-        background-color: rgba(255, 255, 255, 0.05);
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
       }
 
       .btn-group {
-        display: flex;
-        justify-content: flex-end;
+        flex-direction: column;
         gap: 10px;
-        margin-top: 15px;
       }
 
-      .hidden {
-        display: none;
+      .btn {
+        width: 100%;
       }
+    }
 
-      .fade-in {
-        animation: fadeIn 0.5s ease-out forwards;
-      }
+    /* Focus states for accessibility */
+    .provider-item:focus, .form-control:focus, .btn:focus {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+<nav class="nav" aria-label="Main navigation">
+  <span class="nav-title">E-Wallet</span>
+  <div class="profile-icon" role="button" aria-label="Go to profile" tabindex="0">
+    <i class="fas fa-user"></i>
+  </div>
+</nav>
+<div class="container">
+  <button class="back-button" onclick="goBack()" aria-label="Go back">
+    <i class="fas fa-arrow-left"></i> Back
+  </button>
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+  <h1 class="page-title">
+    <i class="fas fa-wifi"></i> Internet Bill Payment
+  </h1>
 
-      .bill-detail {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 0;
-        border-bottom: 1px solid #2a3446;
-      }
+  <!-- Provider Selection Section -->
+  <section id="providerSection" class="section" aria-labelledby="provider-title">
+    <div class="section-title" id="provider-title">
+      <i class="fas fa-building"></i> Select Internet Provider
+    </div>
 
-      .bill-detail:last-child {
-        border-bottom: none;
-      }
-
-      .bill-label {
-        color: #a0a0a0;
-      }
-
-      .bill-value {
-        font-weight: 600;
-        color: #e0e0e0;
-      }
-
-      .total-row {
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 2px solid #2a3446;
-        font-size: 18px;
-      }
-
-      .total-row .bill-value {
-        color: #4f8eff;
-      }
-
-      .success-message {
-        text-align: center;
-        padding: 30px 0;
-      }
-
-      .success-icon {
-        font-size: 50px;
-        color: #10b981;
-        margin-bottom: 15px;
-      }
-
-      .success-text {
-        font-size: 20px;
-        margin-bottom: 15px;
-      }
-
-      .transaction-id {
-        background-color: #141c2e;
-        padding: 10px 15px;
-        border-radius: 6px;
-        font-family: monospace;
-        font-size: 16px;
-        margin: 15px 0;
-        display: inline-block;
-      }
-      /* Navigation Bar */
-      .nav {
-        background: linear-gradient(
-          180deg,
-          rgba(10, 14, 23, 1) 0%,
-          rgba(17, 23, 38, 0.9) 100%
-        );
-        padding: 15px 20px;
-        color: #e0e0e0;
-        font-weight: 600;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        position: relative;
-        z-index: 10;
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      }
-
-      .nav-title {
-        font-size: 1.2rem;
-        background: linear-gradient(90deg, #58a5f8, #d16ba5);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-      }
-
-      .profile-icon {
-        background: linear-gradient(135deg, #5b86e5, #36d1dc);
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 3px 15px rgba(91, 134, 229, 0.4);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .profile-icon:hover {
-        transform: scale(1.1);
-      }
-
-      .profile-icon::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: conic-gradient(
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent 30%
-        );
-        animation: rotate 4s linear infinite;
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="nav">
-      <div class="nav-title">E-Wallet</div>
-      <div class="profile-icon">
-        <i class="fas fa-user"></i>
+    <div class="provider-grid" role="radiogroup" aria-label="Select a provider">
+      <div class="provider-item" onclick="selectProvider(this, 'link3')" role="radio" aria-checked="false" tabindex="0">
+        <div class="provider-icon"><i class="fas fa-broadcast-tower"></i></div>
+        <div class="provider-name">Link3</div>
       </div>
-    </nav>
-    <div class="container">
-      <button class="back-button" onclick="goBack()">
-        <i class="fas fa-arrow-left"></i> Back
-      </button>
-
-      <div class="page-title">
-        <i class="fas fa-wifi"></i> Internet Bill Payment
+      <div class="provider-item" onclick="selectProvider(this, 'amberIT')" role="radio" aria-checked="false" tabindex="0">
+        <div class="provider-icon"><i class="fas fa-signal"></i></div>
+        <div class="provider-name">AmberIT</div>
       </div>
-
-      <!-- Provider Selection Section -->
-      <div id="providerSection" class="section">
-        <div class="section-title">
-          <i class="fas fa-building"></i> Select Internet Provider
-        </div>
-
-        <div class="provider-grid">
-          <div class="provider-item" onclick="selectProvider(this, 'link3')">
-            <div class="provider-icon">
-              <i class="fas fa-broadcast-tower"></i>
-            </div>
-            <div class="provider-name">Link3</div>
-          </div>
-          <div class="provider-item" onclick="selectProvider(this, 'amberIT')">
-            <div class="provider-icon">
-              <i class="fas fa-signal"></i>
-            </div>
-            <div class="provider-name">AmberIT</div>
-          </div>
-          <div class="provider-item" onclick="selectProvider(this, 'carnival')">
-            <div class="provider-icon">
-              <i class="fas fa-globe"></i>
-            </div>
-            <div class="provider-name">Carnival</div>
-          </div>
-          <div
-            class="provider-item"
-            onclick="selectProvider(this, 'samonline')"
-          >
-            <div class="provider-icon">
-              <i class="fas fa-satellite-dish"></i>
-            </div>
-            <div class="provider-name">SamOnline</div>
-          </div>
-          <div class="provider-item" onclick="selectProvider(this, 'ks')">
-            <div class="provider-icon">
-              <i class="fas fa-route"></i>
-            </div>
-            <div class="provider-name">KS Network</div>
-          </div>
-          <div
-            class="provider-item"
-            onclick="selectProvider(this, 'dotinternet')"
-          >
-            <div class="provider-icon">
-              <i class="fas fa-network-wired"></i>
-            </div>
-            <div class="provider-name">Dot Internet</div>
-          </div>
-        </div>
-
-        <div class="btn-group">
-          <button class="btn btn-primary" onclick="showAccountSection()">
-            Next
-          </button>
-        </div>
+      <div class="provider-item" onclick="selectProvider(this, 'carnival')" role="radio" aria-checked="false" tabindex="0">
+        <div class="provider-icon"><i class="fas fa-globe"></i></div>
+        <div class="provider-name">Carnival</div>
       </div>
-
-      <!-- Account Information Section -->
-      <div id="accountSection" class="section hidden">
-        <div class="section-title">
-          <i class="fas fa-user-circle"></i> Account Information
-        </div>
-
-        <div class="form-group">
-          <label for="accountName">Account Name</label>
-          <input
-            type="text"
-            id="accountName"
-            class="form-control"
-            placeholder="Enter account holder name"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="referenceId">Reference ID / Account Number</label>
-          <input
-            type="text"
-            id="referenceId"
-            class="form-control"
-            placeholder="Enter reference ID"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="billAmount">Bill Amount</label>
-          <input
-            type="number"
-            id="billAmount"
-            class="form-control"
-            placeholder="Enter bill amount"
-          />
-        </div>
-
-        <div class="btn-group">
-          <button class="btn btn-outline" onclick="goBackToProvider()">
-            Back
-          </button>
-          <button class="btn btn-primary" onclick="fetchBillDetails()">
-            Check Bill
-          </button>
-        </div>
+      <div class="provider-item" onclick="selectProvider(this, 'samonline')" role="radio" aria-checked="false" tabindex="0">
+        <div class="provider-icon"><i class="fas fa-satellite-dish"></i></div>
+        <div class="provider-name">SamOnline</div>
       </div>
-
-      <!-- Bill Details Section -->
-      <div id="billSection" class="section hidden">
-        <div class="section-title">
-          <i class="fas fa-file-invoice-dollar"></i> Bill Details
-        </div>
-
-        <div class="bill-detail">
-          <div class="bill-label">Account Name:</div>
-          <div class="bill-value" id="billName">John Doe</div>
-        </div>
-
-        <div class="bill-detail">
-          <div class="bill-label">Account Number:</div>
-          <div class="bill-value" id="billAccountNumber">12345678</div>
-        </div>
-
-        <div class="bill-detail">
-          <div class="bill-label">Provider:</div>
-          <div class="bill-value" id="billProvider">Xfinity</div>
-        </div>
-
-        <div class="bill-detail">
-          <div class="bill-label">Bill Amount:</div>
-          <div id="billAmountDisplay" class="bill-value">BDT 0.00</div>
-        </div>
-
-        <div class="bill-detail">
-          <div class="bill-label">Service Fee:</div>
-          <div class="bill-value">BDT 2.50</div>
-        </div>
-
-        <div class="bill-detail total-row">
-          <div class="bill-label">Total Amount:</div>
-          <div class="bill-value">BDT 82.49</div>
-        </div>
-
-        <div class="btn-group">
-          <button class="btn btn-outline" onclick="goBackToAccount()">
-            Back
-          </button>
-          <button class="btn btn-primary" onclick="confirmPayment()">
-            Confirm Payment
-          </button>
-        </div>
+      <div class="provider-item" onclick="selectProvider(this, 'ks')" role="radio" aria-checked="false" tabindex="0">
+        <div class="provider-icon"><i class="fas fa-route"></i></div>
+        <div class="provider-name">KS Network</div>
       </div>
-
-      <!-- Payment Success Section -->
-      <div id="successSection" class="section hidden">
-        <div class="success-message">
-          <div class="success-icon">
-            <i class="fas fa-check-circle"></i>
-          </div>
-          <div class="success-text">Payment Successful!</div>
-          <p>Your internet bill has been paid successfully.</p>
-          <div class="transaction-id" id="transactionId">TXN123456789</div>
-        </div>
-
-        <div class="btn-group" style="justify-content: center">
-          <button class="btn btn-primary" onclick="goToHome()">
-            Back to Home
-          </button>
-        </div>
+      <div class="provider-item" onclick="selectProvider(this, 'dotinternet')" role="radio" aria-checked="false" tabindex="0">
+        <div class="provider-icon"><i class="fas fa-network-wired"></i></div>
+        <div class="provider-name">Dot Internet</div>
       </div>
     </div>
 
-    <script>
-      let selectedProvider = null;
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="showAccountSection()">Next</button>
+    </div>
+  </section>
 
-      // Navigation functions
-      function goBack() {
-        window.location.href = "../home";
+  <!-- Account Information Section -->
+  <section id="accountSection" class="section hidden" aria-labelledby="account-title">
+    <div class="section-title" id="account-title">
+      <i class="fas fa-user-circle"></i> Account Information
+    </div>
+
+    <form id="accountForm" onsubmit="return validateForm()">
+      <div class="form-group">
+        <label for="accountName">Account Name</label>
+        <input
+                type="text"
+                id="accountName"
+                class="form-control"
+                placeholder="Enter account holder name"
+                required
+                aria-describedby="accountNameError"
+        />
+        <div id="accountNameError" class="error-message">Please enter a valid account name</div>
+      </div>
+
+      <div class="form-group">
+        <label for="referenceId">Reference ID / Account Number</label>
+        <input
+                type="text"
+                id="referenceId"
+                class="form-control"
+                placeholder="Enter reference ID"
+                required
+                aria-describedby="referenceIdError"
+        />
+        <div id="referenceIdError" class="error-message">Please enter a valid reference ID</div>
+      </div>
+
+      <div class="form-group">
+        <label for="billAmount">Bill Amount (BDT)</label>
+        <input
+                type="number"
+                id="billAmount"
+                class="form-control"
+                placeholder="Enter bill amount"
+                min="1"
+                step="0.01"
+                required
+                aria-describedby="billAmountError"
+        />
+        <div id="billAmountError" class="error-message">Please enter a valid amount</div>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-outline" onclick="goBackToProvider()">Back</button>
+        <button type="submit" class="btn btn-primary">Check Bill</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Bill Details Section -->
+  <section id="billSection" class="section hidden" aria-labelledby="bill-title">
+    <div class="section-title" id="bill-title">
+      <i class="fas fa-file-invoice-dollar"></i> Bill Details
+    </div>
+
+    <div class="bill-detail">
+      <div class="bill-label">Account Name:</div>
+      <div class="bill-value" id="billName"></div>
+    </div>
+
+    <div class="bill-detail">
+      <div class="bill-label">Account Number:</div>
+      <div class="bill-value" id="billAccountNumber"></div>
+    </div>
+
+    <div class="bill-detail">
+      <div class="bill-label">Provider:</div>
+      <div class="bill-value" id="billProvider"></div>
+    </div>
+
+    <div class="bill-detail">
+      <div class="bill-label">Bill Amount:</div>
+      <div id="billAmountDisplay" class="bill-value"></div>
+    </div>
+
+    <div class="bill-detail">
+      <div class="bill-label">Service Fee:</div>
+      <div class="bill-value">BDT 2.50</div>
+    </div>
+
+    <div class="bill-detail total-row">
+      <div class="bill-label">Total Amount:</div>
+      <div class="bill-value" id="totalAmount"></div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-outline" onclick="goBackToAccount()">Back</button>
+      <button class="btn btn-primary" onclick="confirmPayment()">Confirm Payment</button>
+    </div>
+  </section>
+
+  <!-- Payment Success Section -->
+  <section id="successSection" class="section hidden" aria-labelledby="success-title">
+    <div class="success-message">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="success-text" id="success-title">Payment Successful!</div>
+      <p>Your internet bill has been paid successfully.</p>
+      <div class="transaction-id" id="transactionId"></div>
+    </div>
+
+    <div class="btn-group" style="justify-content: center">
+      <button class="btn btn-primary" onclick="goToHome()">Back to Home</button>
+    </div>
+  </section>
+</div>
+
+<script>
+  let selectedProvider = null;
+
+  // Navigation functions
+  function goBack() {
+    sessionStorage.removeItem('selectedCardId');
+    window.location.href = '/home';
+  }
+
+  function goToHome() {
+    sessionStorage.removeItem('selectedCardId');
+    window.location.href = '/home';
+  }
+
+  document.querySelector('.profile-icon').addEventListener('click', () => {
+    window.location.href = '/profile';
+  });
+
+  // Keyboard support for profile icon
+  document.querySelector('.profile-icon').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      window.location.href = '/profile';
+    }
+  });
+
+  // Provider selection
+  function selectProvider(element, provider) {
+    document.querySelectorAll('.provider-item').forEach(item => {
+      item.classList.remove('selected');
+      item.setAttribute('aria-checked', 'false');
+    });
+    element.classList.add('selected');
+    element.setAttribute('aria-checked', 'true');
+    selectedProvider = provider;
+  }
+
+  // Keyboard support for provider selection
+  document.querySelectorAll('.provider-item').forEach(item => {
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const provider = item.getAttribute('onclick').match(/'([^']+)'/)[1];
+        selectProvider(item, provider);
       }
+    });
+  });
 
-      function goToHome() {
-        window.location.href = "../home";
+  // Show account section
+  function showAccountSection() {
+    if (!selectedProvider) {
+      alert('Please select an internet provider');
+      return;
+    }
+    document.getElementById('providerSection').classList.add('hidden');
+    document.getElementById('accountSection').classList.remove('hidden');
+    document.getElementById('accountSection').classList.add('fade-in');
+    document.getElementById('accountName').focus();
+  }
+
+  // Go back to provider section
+  function goBackToProvider() {
+    document.getElementById('accountSection').classList.add('hidden');
+    document.getElementById('providerSection').classList.remove('hidden');
+  }
+
+  // Go back to account section
+  function goBackToAccount() {
+    document.getElementById('billSection').classList.add('hidden');
+    document.getElementById('accountSection').classList.remove('hidden');
+  }
+
+  // Validate form inputs
+  function validateForm() {
+    const accountName = document.getElementById('accountName').value.trim();
+    const referenceId = document.getElementById('referenceId').value.trim();
+    const billAmount = document.getElementById('billAmount').value;
+    const cardId = sessionStorage.getItem('selectedCardId');
+
+    let isValid = true;
+
+    // Reset error states
+    document.querySelectorAll('.form-control').forEach(input => {
+      input.classList.remove('error');
+      input.nextElementSibling.style.display = 'none';
+    });
+
+    if (!accountName) {
+      document.getElementById('accountName').classList.add('error');
+      document.getElementById('accountNameError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!referenceId) {
+      document.getElementById('referenceId').classList.add('error');
+      document.getElementById('referenceIdError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!billAmount || billAmount <= 0) {
+      document.getElementById('billAmount').classList.add('error');
+      document.getElementById('billAmountError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!cardId) {
+      alert('Please select a payment card on the home page.');
+      return false;
+    }
+
+    if (isValid) {
+      fetchBillDetails();
+    }
+
+    return false; // Prevent form submission
+  }
+
+  // Fetch bill details (mock for now, replace with API if needed)
+  function fetchBillDetails() {
+    const accountName = document.getElementById('accountName').value.trim();
+    const referenceId = document.getElementById('referenceId').value.trim();
+    const billAmount = parseFloat(document.getElementById('billAmount').value);
+
+    document.getElementById('billName').textContent = accountName;
+    document.getElementById('billAccountNumber').textContent = referenceId;
+    document.getElementById('billProvider').textContent = getProviderName(selectedProvider);
+    document.getElementById('billAmountDisplay').textContent = `BDT ${billAmount.toFixed(2)}`;
+    document.getElementById('totalAmount').textContent = `BDT ${(billAmount + 2.50).toFixed(2)}`;
+
+    document.getElementById('accountSection').classList.add('hidden');
+    document.getElementById('billSection').classList.remove('hidden');
+    document.getElementById('billSection').classList.add('fade-in');
+  }
+
+  // Get provider name from provider code
+  function getProviderName(providerCode) {
+    const providers = {
+      link3: 'Link3',
+      amberIT: 'AmberIT',
+      carnival: 'Carnival',
+      samonline: 'SamOnline',
+      ks: 'KS Network',
+      dotinternet: 'Dot Internet'
+    };
+    return providers[providerCode] || providerCode;
+  }
+
+  // Confirm payment
+  async function confirmPayment() {
+    const cardId = sessionStorage.getItem('selectedCardId');
+    if (!cardId) {
+      alert('Please select a payment card on the home page.');
+      return;
+    }
+
+    const provider = selectedProvider;
+    const referenceId = document.getElementById('billAccountNumber').textContent;
+    const amount = parseFloat(document.getElementById('billAmountDisplay').textContent.replace('BDT ', '')) + 2.50;
+
+    try {
+      const response = await fetch('/payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          provider,
+          referenceId,
+          amount,
+          cardId,
+          service_type: 'internet'
+        })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        document.getElementById('billSection').classList.add('hidden');
+        document.getElementById('transactionId').textContent = result.transactionId;
+        document.getElementById('successSection').classList.remove('hidden');
+        document.getElementById('successSection').classList.add('fade-in');
+        sessionStorage.removeItem('selectedCardId');
+      } else {
+        alert(result.error || 'Payment failed');
       }
-
-      // Provider selection
-      function selectProvider(element, provider) {
-        // Remove selected class from all providers
-        const providers = document.querySelectorAll(".provider-item");
-        providers.forEach((item) => item.classList.remove("selected"));
-
-        // Add selected class to clicked provider
-        element.classList.add("selected");
-        selectedProvider = provider;
-      }
-
-      // Show account section
-      function showAccountSection() {
-        if (!selectedProvider) {
-          alert("Please select an internet provider");
-          return;
-        }
-
-        document.getElementById("providerSection").classList.add("hidden");
-        document.getElementById("accountSection").classList.remove("hidden");
-        document.getElementById("accountSection").classList.add("fade-in");
-      }
-
-      // Go back to provider section
-      function goBackToProvider() {
-        document.getElementById("accountSection").classList.add("hidden");
-        document.getElementById("providerSection").classList.remove("hidden");
-      }
-
-      // Go back to account section
-      function goBackToAccount() {
-        document.getElementById("billSection").classList.add("hidden");
-        document.getElementById("accountSection").classList.remove("hidden");
-      }
-
-      // Fetch bill details
-      function fetchBillDetails() {
-        const accountName = document.getElementById("accountName").value;
-        const referenceId = document.getElementById("referenceId").value;
-        const billAmount = document.getElementById("billAmount").value;
-
-        if (!accountName || !referenceId || !billAmount) {
-          alert("Please enter account name, reference ID, and bill amount");
-          return;
-        }
-
-        // Set bill details (in a real app, this would come from an API)
-        document.getElementById("billName").textContent = accountName;
-        document.getElementById("billAccountNumber").textContent = referenceId;
-        document.getElementById(
-          "billAmountDisplay"
-        ).textContent = `BDT ${billAmount}`;
-        document.getElementById("billProvider").textContent =
-          getProviderName(selectedProvider);
-
-        // Show bill section
-        document.getElementById("accountSection").classList.add("hidden");
-        document.getElementById("billSection").classList.remove("hidden");
-        document.getElementById("billSection").classList.add("fade-in");
-      }
-
-      // Get provider name from provider code
-      function getProviderName(providerCode) {
-        const providers = {
-          link3: "Link3",
-          amberIT: "AmberIT",
-          carnival: "Carnival",
-          samonline: "SamOnline",
-          ks: "KS Network",
-          dotinternet: "Dot Internet",
-        };
-
-        return providers[providerCode] || providerCode;
-      }
-
-      // Confirm payment
-      function confirmPayment() {
-        // Hide bill section
-        document.getElementById("billSection").classList.add("hidden");
-
-        // Generate random transaction ID
-        const txnId =
-          "TXN" +
-          Math.floor(Math.random() * 1000000000)
-            .toString()
-            .padStart(9, "0");
-        document.getElementById("transactionId").textContent = txnId;
-
-        // Show success section
-        document.getElementById("successSection").classList.remove("hidden");
-        document.getElementById("successSection").classList.add("fade-in");
-      }
-    </script>
-    <script>
-      // Navigation functions
-      function goBack() {
-        window.location.href = "../home";
-      }
-      document
-        .querySelector(".profile-icon")
-        .addEventListener("click", function () {
-          window.location.href = "../profile";
-        });
-    </script>
-  </body>
+    } catch (error) {
+      alert('Error processing payment: ' + error.message);
+    }
+  }
+</script>
+</body>
 </html>
