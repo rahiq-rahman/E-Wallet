@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modern E-Wallet</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/commonstyle.css"/>
+  <style>
+    /* Preserve original styles */
+    .service-item {
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .service-item:hover {
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-item a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(10, 14, 23, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-container {
+      background: linear-gradient(135deg, #1a2235 0%, #141c2e 100%);
+      width: 90%;
+      max-width: 420px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      position: relative;
+      height: 90vh;
+      overflow: auto;
+    }
+
+    .modal-header {
+      padding: 20px;
+      background: linear-gradient(180deg, #111726 0%, #0a0e17 100%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #2a3446;
+    }
+
+    .modal-title {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-title i {
+      color: #4f8eff;
+    }
+
+    .close-modal {
+      color: #ffffff;
+      font-size: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #d1d5db; /* Improved contrast */
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #4b5563; /* Consistent with subscription.html */
+      background-color: #1f2937; /* Improved contrast */
+      color: #f7f7f7;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #4f8eff;
+      outline: none;
+    }
+
+    .form-group input.error,
+    .form-group select.error {
+      border-color: #ef4444; /* Error state */
+      box-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
+    }
+
+    .error-message {
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23d1d5db' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 16px;
+    }
+
+    .input-icon-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      color: #4f8eff;
+    }
+
+    .expiry-cvv-container {
+      display: flex;
+      gap: 15px;
+    }
+
+    .expiry-cvv-container .form-group {
+      flex: 1;
+    }
+
+    .card-preview {
+      margin: 20px 0;
+      height: 200px;
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(45deg, #4f8eff 0%, #2563eb 100%);
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+      transition: background 0.3s;
+    }
+
+    .card-preview-visa {
+      background: linear-gradient(45deg, #4f8eff 0%, #2563eb 100%);
+    }
+
+    .card-preview-mastercard {
+      background: linear-gradient(45deg, #eb4c3a 0%, #cf2e21 100%);
+    }
+
+    .card-preview-amex {
+      background: linear-gradient(45deg, #30a3db 0%, #1e88be 100%);
+    }
+
+    .card-chip {
+      width: 40px;
+      height: 30px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .card-number-preview {
+      font-size: 20px;
+      color: #ffffff;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    .card-details-preview {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .card-holder-preview,
+    .card-date-preview {
+      color: #ffffff;
+    }
+
+    .card-holder-preview span,
+    .card-date-preview span {
+      display: block;
+      font-size: 12px;
+      opacity: 0.8;
+      margin-bottom: 5px;
+    }
+
+    .card-type-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 30px;
+      color: #ffffff;
+    }
+
+    .modal-footer {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #2a3446;
+    }
+
+    .cancel-btn,
+    .add-card-btn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .cancel-btn {
+      background-color: transparent;
+      color: #dcdcdc;
+      border: 1px solid #2a3446;
+    }
+
+    .cancel-btn:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .add-card-btn {
+      background: linear-gradient(180deg, #4f8eff 0%, #2563eb 100%);
+      color: #ffffff;
+      border: none;
+      flex-grow: 1;
+      margin-left: 10px;
+    }
+
+    .add-card-btn:hover {
+      background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .cards-container {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 15px;
+      padding: 20px 0;
+    }
+
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      flex-shrink: 0;
+      width: 280px;
+      scroll-snap-align: center;
+    }
+
+    .card.active {
+      transform: scale(1.05) translateY(-10px);
+      z-index: 2;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      border: 2px solid #4f8eff; /* Subtle active border */
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #555;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .dot:hover, .dot:focus {
+      transform: scale(1.2);
+      background: #4f8eff;
+      outline: none;
+    }
+
+    .dot.active {
+      background: #4f8eff;
+      transform: scale(1.4);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      padding: 8px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      z-index: 2;
+    }
+
+    .card-badge:hover {
+      background: #ef4444;
+      transform: scale(1.2);
+    }
+
+    .card-badge i {
+      color: #fff;
+      font-size: 14px;
+    }
+
+    /* Accessibility */
+    .card:focus, .dot:focus, .add-button:focus, .close-modal:focus, .cancel-btn:focus, .add-card-btn:focus {
+      outline: 2px solid #4f8eff;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+<nav class="nav" aria-label="Main navigation">
+  <span class="nav-title">E-Wallet</span>
+  <div class="profile-icon" role="button" aria-label="Go to profile" tabindex="0">
+    <i class="fas fa-user"></i>
+  </div>
+</nav>
+<div style="background: linear-gradient(180deg, #111726 0%, #0a0e17 100%)">
+  <div class="bg-element bg-element-1"></div>
+  <div class="container">
+    <div class="wave"></div>
+    <div class="section-title">
+      <span>My Cards</span>
+      <div class="add-button" role="button" aria-label="Add new card" tabindex="0">
+        <i class="fas fa-plus"></i>
+      </div>
+    </div>
+    <div class="cards-container" role="listbox" aria-label="Select a card">
+      <% if (cards && cards.length > 0) { %>
+        <% cards.forEach((card, index) => { %>
+          <div class="card card-<%= (index % 3) + 1 %> <%= index === 0 ? 'active' : '' %>" data-card-id="<%= card.card_id %>" role="option" aria-selected="<%= index === 0 ? 'true' : 'false' %>" tabindex="0">
+            <div class="card-badge" role="button" aria-label="Remove card <%= card.card_number.slice(-4) %>" tabindex="0">
+              <i class="fas fa-close"></i>
+            </div>
+            <img src="/img/chip.jpg" alt="Card Chip" class="card-chip"/>
+            <div class="card-number">**** **** **** <%= card.card_number.slice(-4) %></div>
+            <div class="card-details">
+              <div class="card-holder">
+                <span>Card Holder</span>
+                <div class="card-name"><%= card.card_holder_name %></div>
+              </div>
+              <div class="card-date">
+                <span>Exp.</span>
+                <div><%= card.expiry_date %></div>
+              </div>
+            </div>
+            <div class="card-balance-expense">
+              <div>BDT <%= Number(card.balance).toFixed(2) %></div>
+            </div>
+            <img src="/img/<%= card.card_type.toLowerCase() %>.jpg" alt="<%= card.card_type %> Logo" class="card-logo"/>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p>No cards added yet.</p>
+      <% } %>
+    </div>
+    <div class="pagination" role="tablist" aria-label="Card pagination">
+      <% if (cards && cards.length > 0) { %>
+        <% for (let i = 0; i < cards.length; i++) { %>
+          <div class="dot <%= i === 0 ? 'active' : '' %>" role="tab" aria-selected="<%= i === 0 ? 'true' : 'false' %>" tabindex="0"></div>
+        <% } %>
+      <% } %>
+    </div>
+    <div class="user-welcome">Welcome, <%= username || 'User' %>!</div>
+    <div class="info-boxes">
+      <div class="info-box">
+        <div class="info-title"><i class="fas fa-wallet"></i> Balance</div>
+        <div class="info-value">BDT <%= Number(totalBalance).toFixed(2) %></div>
+      </div>
+      <div class="info-box">
+        <div class="info-title"><i class="fas fa-chart-line"></i> Expenses</div>
+        <div class="info-value">BDT <%= Number(totalExpense).toFixed(2) %></div>
+      </div>
+    </div>
+    <div class="services-title">
+      <i class="fas fa-list-ul"></i> Services
+    </div>
+    <div class="services-grid">
+      <div class="service-item" role="button" aria-label="Electricity payment">
+        <a href="/electricity">
+          <div class="service-icon electricity">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <div class="service-name">Electricity</div>
+        </a>
+      </div>
+      <div class="service-item" role="button" aria-label="Internet payment">
+        <a href="/internet">
+          <div class="service-icon internet">
+            <i class="fas fa-wifi"></i>
+          </div>
+          <div class="service-name">Internet</div>
+        </a>
+      </div>
+      <div class="service-item" role="button" aria-label="Mobile recharge">
+        <a href="/mobile">
+          <div class="service-icon mobile">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div class="service-name">Mobile</div>
+        </a>
+      </div>
+      <div class="service-item" role="button" aria-label="Gas payment">
+        <a href="/gas">
+          <div class="service-icon gas">
+            <i class="fas fa-fire"></i>
+          </div>
+          <div class="service-name">Gas</div>
+        </a>
+      </div>
+      <div class="service-item" role="button" aria-label="Subscription payment">
+        <a href="/subscription">
+          <div class="service-icon subscription">
+            <i class="fas fa-sync-alt"></i>
+          </div>
+          <div class="service-name">Subscription</div>
+        </a>
+      </div>
+      <div class="service-item" role="button" aria-label="Donate">
+        <a href="/donate">
+          <div class="service-icon donate">
+            <i class="fas fa-hand-holding-heart"></i>
+          </div>
+          <div class="service-name">Donate</div>
+        </a>
+      </div>
+      <div class="service-item" role="button" aria-label="Merchant payment">
+        <a href="/merchant">
+          <div class="service-icon merchant">
+            <i class="fas fa-store"></i>
+          </div>
+          <div class="service-name">Merchant</div>
+        </a>
+      </div>
+      <div class="service-item" role="button" aria-label="Water payment">
+        <a href="/water">
+          <div class="service-icon water">
+            <i class="fas fa-tint"></i>
+          </div>
+          <div class="service-name">Water</div>
+        </a>
+      </div>
+    </div>
+    <div class="transactions-container">
+      <div class="transactions-header">
+        <div class="transactions-title">
+          <i class="fas fa-history"></i> Transactions
+        </div>
+        <div class="view-all" role="button" aria-label="View all transactions" tabindex="0">View All</div>
+      </div>
+      <div class="transactions-list" id="transactionsList">
+        <!-- Transactions populated dynamically -->
+      </div>
+    </div>
+  </div>
+  <div class="bg-element bg-element-2"></div>
+</div>
+<div id="addCardModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-container">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">
+        <i class="fas fa-credit-card"></i> Add New Card
+      </div>
+      <button class="close-modal" aria-label="Close modal">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card-preview" id="cardPreview">
+        <div class="card-type-icon" id="cardTypeIcon">
+          <i class="fab fa-cc-visa"></i>
+        </div>
+        <div class="card-chip"></div>
+        <div class="card-number-preview" id="cardNumberPreview">**** **** **** ****</div>
+        <div class="card-details-preview">
+          <div class="card-holder-preview">
+            <span>Card Holder</span>
+            <div id="cardHolderPreview">YOUR NAME</div>
+          </div>
+          <div class="card-date-preview">
+            <span>Expires</span>
+            <div id="cardExpiryPreview">MM/YY</div>
+          </div>
+        </div>
+      </div>
+      <form id="addCardForm">
+        <div class="form-group">
+          <label for="cardHolder">Card Holder Name</label>
+          <div class="input-icon-wrapper">
+            <input
+                    type="text"
+                    id="cardHolder"
+                    name="cardHolder"
+                    placeholder="Name on card"
+                    required
+                    aria-describedby="cardHolderError"
+            />
+            <div class="input-icon">
+              <i class="fas fa-user"></i>
+            </div>
+            <div id="cardHolderError" class="error-message">Please enter a valid name</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cardNumber">Card Number</label>
+          <div class="input-icon-wrapper">
+            <input
+                    type="text"
+                    id="cardNumber"
+                    name="cardNumber"
+                    placeholder="1234 5678 9012 3456"
+                    maxlength="19"
+                    required
+                    aria-describedby="cardNumberError"
+            />
+            <div class="input-icon">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div id="cardNumberError" class="error-message">Please enter a valid card number (16 digits)</div>
+          </div>
+        </div>
+        <div class="expiry-cvv-container">
+          <div class="form-group">
+            <label for="expiryDate">Expiry Date</label>
+            <input
+                    type="text"
+                    id="expiryDate"
+                    name="expiryDate"
+                    placeholder="MM/YY"
+                    maxlength="5"
+                    required
+                    aria-describedby="expiryDateError"
+            />
+            <div id="expiryDateError" class="error-message">Please enter a valid expiry date (MM/YY)</div>
+          </div>
+          <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input
+                    type="password"
+                    id="cvv"
+                    name="cvv"
+                    placeholder="***"
+                    maxlength="4"
+                    required
+                    aria-describedby="cvvError"
+            />
+            <div id="cvvError" class="error-message">Please enter a valid CVV (3-4 digits)</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cardType">Card Type</label>
+          <select id="cardType" name="cardType" required aria-describedby="cardTypeError">
+            <option value="">Select Card Type</option>
+            <option value="visa">Visa</option>
+            <option value="mastercard">Mastercard</option>
+            <option value="amex">American Express</option>
+          </select>
+          <div id="cardTypeError" class="error-message">Please select a card type</div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn">Cancel</button>
+      <button class="add-card-btn">Add Card</button>
+    </div>
+  </div>
+</div>
+<script>
+  // Profile navigation
+  document.querySelector('.profile-icon').addEventListener('click', () => {
+    window.location.href = '/profile';
+  });
+
+  document.querySelector('.profile-icon').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      window.location.href = '/profile';
+    }
+  });
+
+  // Card selection
+  function selectCard(card) {
+    document.querySelectorAll('.card').forEach(c => {
+      c.classList.remove('active');
+      c.setAttribute('aria-selected', 'false');
+    });
+    card.classList.add('active');
+    card.setAttribute('aria-selected', 'true');
+    const cardId = card.getAttribute('data-card-id');
+    sessionStorage.setItem('selectedCardId', cardId);
+    updatePagination();
+  }
+
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => selectCard(card));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        selectCard(card);
+      }
+    });
+  });
+
+  // Restore selected card
+  const storedCardId = sessionStorage.getItem('selectedCardId');
+  if (storedCardId) {
+    const storedCard = document.querySelector(`.card[data-card-id="${storedCardId}"]`);
+    if (storedCard) selectCard(storedCard);
+  }
+
+  // Card removal
+  document.querySelectorAll('.card-badge').forEach(badge => {
+    badge.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const card = badge.closest('.card');
+      const cardId = card.getAttribute('data-card-id');
+      const last4 = card.querySelector('.card-number').textContent.slice(-4);
+      if (confirm(`Are you sure you want to remove card ending in ${last4}?`)) {
+        try {
+          const response = await fetch('/card/remove', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cardId })
+          });
+          const result = await response.json();
+          if (result.success) {
+            card.remove();
+            if (cardId === sessionStorage.getItem('selectedCardId')) {
+              sessionStorage.removeItem('selectedCardId');
+            }
+            updatePagination();
+            alert('Card removed successfully!');
+          } else {
+            alert(result.error || 'Failed to remove card.');
+          }
+        } catch (error) {
+          alert('Error removing card: ' + error.message);
+        }
+      }
+    });
+    badge.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        badge.click();
+      }
+    });
+  });
+
+  // Pagination
+  function updatePagination() {
+    const cards = document.querySelectorAll('.card');
+    const dots = document.querySelectorAll('.dot');
+    const activeCard = document.querySelector('.card.active');
+    if (!activeCard) return;
+    const activeIndex = Array.from(cards).indexOf(activeCard);
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === activeIndex);
+      dot.setAttribute('aria-selected', index === activeIndex ? 'true' : 'false');
+    });
+  }
+
+  document.querySelectorAll('.dot').forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      const card = document.querySelectorAll('.card')[index];
+      if (card) selectCard(card);
+    });
+    dot.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        dot.click();
+      }
+    });
+  });
+
+  // Modal handling
+  function openCardModal() {
+    const modal = document.getElementById('addCardModal');
+    modal.classList.add('active');
+    modal.querySelector('#cardHolder').focus();
+    trapFocus(modal);
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('addCardModal');
+    modal.classList.remove('active');
+    document.querySelector('.add-button').focus();
+    resetAddCardForm();
+  }
+
+  function resetAddCardForm() {
+    document.getElementById('addCardForm').reset();
+    document.getElementById('cardNumberPreview').textContent = '**** **** **** ****';
+    document.getElementById('cardHolderPreview').textContent = 'YOUR NAME';
+    document.getElementById('cardExpiryPreview').textContent = 'MM/YY';
+    document.getElementById('cardTypeIcon').innerHTML = '<i class="fab fa-cc-visa"></i>';
+    document.getElementById('cardPreview').className = 'card-preview card-preview-visa';
+    document.querySelectorAll('.error-message').forEach(e => e.style.display = 'none');
+    document.querySelectorAll('.form-group input, .form-group select').forEach(i => i.classList.remove('error'));
+  }
+
+  function trapFocus(modal) {
+    const focusable = modal.querySelectorAll('input, select, button, [tabindex="0"]');
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    modal.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+      if (e.key === 'Escape') closeModal();
+    });
+  }
+
+  document.querySelector('.add-button').addEventListener('click', openCardModal);
+  document.querySelector('.add-button').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openCardModal();
+    }
+  });
+
+  document.querySelector('.close-modal').addEventListener('click', closeModal);
+  document.querySelector('.cancel-btn').addEventListener('click', closeModal);
+
+  // Card form input handling
+  document.getElementById('cardNumber').addEventListener('input', function (e) {
+    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    let formattedValue = '';
+    for (let i = 0; i < value.length; i++) {
+      if (i > 0 && i % 4 === 0) formattedValue += ' ';
+      formattedValue += value[i];
+    }
+    e.target.value = formattedValue.slice(0, 19);
+    document.getElementById('cardNumberPreview').textContent =
+            value.length > 0 ? '**** **** **** ' + value.slice(-4).padEnd(4, '*') : '**** **** **** ****';
+    detectCardType(value);
+  });
+
+  document.getElementById('expiryDate').addEventListener('input', function (e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    e.target.value = value.slice(0, 5);
+    document.getElementById('cardExpiryPreview').textContent = value || 'MM/YY';
+  });
+
+  document.getElementById('cardHolder').addEventListener('input', function (e) {
+    let value = e.target.value;
+    document.getElementById('cardHolderPreview').textContent = value ? value.toUpperCase() : 'YOUR NAME';
+  });
+
+  document.getElementById('cardType').addEventListener('change', function (e) {
+    updateCardTypeUI(e.target.value);
+  });
+
+  function detectCardType(number) {
+    let cardType = number.startsWith('4') ? 'visa' :
+            number.startsWith('5') ? 'mastercard' :
+                    number.startsWith('34') || number.startsWith('37') ? 'amex' : '';
+    if (cardType) {
+      document.getElementById('cardType').value = cardType;
+      updateCardTypeUI(cardType);
+    }
+  }
+
+  function updateCardTypeUI(cardType) {
+    const cardPreview = document.getElementById('cardPreview');
+    const cardTypeIcon = document.getElementById('cardTypeIcon');
+    cardPreview.className = 'card-preview';
+    if (cardType === 'visa') {
+      cardPreview.classList.add('card-preview-visa');
+      cardTypeIcon.innerHTML = '<i class="fab fa-cc-visa"></i>';
+    } else if (cardType === 'mastercard') {
+      cardPreview.classList.add('card-preview-mastercard');
+      cardTypeIcon.innerHTML = '<i class="fab fa-cc-mastercard"></i>';
+    } else if (cardType === 'amex') {
+      cardPreview.classList.add('card-preview-amex');
+      cardTypeIcon.innerHTML = '<i class="fab fa-cc-amex"></i>';
+    }
+  }
+
+  // Card form validation and submission
+  async function saveCard() {
+    const cardHolder = document.getElementById('cardHolder').value.trim();
+    const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+    const expiryDate = document.getElementById('expiryDate').value;
+    const cvv = document.getElementById('cvv').value;
+    const cardType = document.getElementById('cardType').value;
+
+    let isValid = true;
+    document.querySelectorAll('.form-group input, .form-group select').forEach(i => i.classList.remove('error'));
+    document.querySelectorAll('.error-message').forEach(e => e.style.display = 'none');
+
+    if (!cardHolder || cardHolder.length < 2) {
+      document.getElementById('cardHolder').classList.add('error');
+      document.getElementById('cardHolderError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!cardNumber || !/^\d{16}$/.test(cardNumber)) {
+      document.getElementById('cardNumber').classList.add('error');
+      document.getElementById('cardNumberError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!expiryDate || !/^(0[1-9]|1[0-2])\/[0-9]{2}$/.test(expiryDate)) {
+      document.getElementById('expiryDate').classList.add('error');
+      document.getElementById('expiryDateError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!cvv || !/^\d{3,4}$/.test(cvv)) {
+      document.getElementById('cvv').classList.add('error');
+      document.getElementById('cvvError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!cardType) {
+      document.getElementById('cardType').classList.add('error');
+      document.getElementById('cardTypeError').style.display = 'block';
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
+    try {
+      const response = await fetch('/card/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cardHolderName: cardHolder,
+          cardNumber,
+          expiryDate,
+          cvv,
+          cardType
+        })
+      });
+      const result = await response.json();
+      if (response.status === 201) {
+        alert('Card added successfully!');
+        closeModal();
+        window.location.reload();
+      } else {
+        alert(result.message || 'Failed to add card.');
+      }
+    } catch (error) {
+      alert('Error adding card: ' + error.message);
+    }
+  }
+
+  document.querySelector('.add-card-btn').addEventListener('click', saveCard);
+
+  // Service navigation
+  function navigateToService(service) {
+    const cardId = sessionStorage.getItem('selectedCardId');
+    if (!cardId) {
+      alert('Please select a card before proceeding.');
+      return;
+    }
+    window.location.href = `/${service}`;
+  }
+
+  document.querySelectorAll('.service-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const service = item.querySelector('a').getAttribute('href').slice(1);
+      navigateToService(service);
+    });
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        item.click();
+      }
+    });
+  })
+
+  // Fetch transactions
+  async function fetchTransactions() {
+    try {
+      const response = await fetch('/transactions?page=1&limit=5');
+      const result = await response.json();
+      if (result.success) {
+        renderTransactions(result.transactions);
+      } else {
+        document.getElementById('transactionsList').innerHTML = '<p>No transactions found.</p>';
+      }
+    } catch (error) {
+      document.getElementById('transactionsList').innerHTML = '<p>Error loading transactions.</p>';
+    }
+  }
+
+  function renderTransactions(transactions) {
+    const container = document.getElementById('transactionsList');
+    container.innerHTML = '';
+    const serviceIcons = {
+      electricity: 'fa-lightbulb',
+      internet: 'fa-wifi',
+      mobile: 'fa-mobile-alt',
+      gas: 'fa-fire',
+      subscription: 'fa-sync-alt',
+      donate: 'fa-hand-holding-heart',
+      merchant: 'fa-store',
+      water: 'fa-tint',
+      shopping: 'fa-shopping-cart',
+      salary: 'fa-money-bill-alt'
+    };
+    transactions.forEach(t => {
+      const date = new Date(t.date).toLocaleString('en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      });
+      const amountClass = t.amount >= 0 ? '' : 'negative';
+      const icon = serviceIcons[t.service_type.toLowerCase()] || 'fa-shopping-cart';
+      container.innerHTML += `
+        <div class="transaction-item">
+          <div class="transaction-details">
+            <div class="transaction-icon">
+              <i class="fas ${icon}"></i>
+            </div>
+            <div class="transaction-info">
+              <div class="transaction-name">${t.service_type.charAt(0).toUpperCase() + t.service_type.slice(1)}</div>
+              <div class="transaction-date">${date}</div>
+            </div>
+          </div>
+          <div class="transaction-amount ${amountClass}">BDT ${Math.abs(t.amount).toFixed(2)}</div>
+        </div>
+      `;
+    });
+  }
+
+  // View all transactions
+  document.querySelector('.view-all').addEventListener('click', () => {
+    window.location.href = '/transactions';
+  });
+
+  document.querySelector('.view-all').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      window.location.href = '/transactions';
+    }
+  });
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchTransactions();
+    updatePagination();
+  });
+</script>
+</body>
+</html>
